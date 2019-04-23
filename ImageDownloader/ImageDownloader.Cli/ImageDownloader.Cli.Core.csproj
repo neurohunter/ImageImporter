@@ -5,6 +5,9 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <StartupObject>ImageDownloader.Cli.Program</StartupObject>
     <Authors>Pavel Vishnyakov</Authors>
+    <PackageId>ImageDownloader.Cli.Core</PackageId>
+    <AssemblyName>ImageDownloader.Cli.Core</AssemblyName>
+    <RootNamespace>ImageDownloader.Cli.Core</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
