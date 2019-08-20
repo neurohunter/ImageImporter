@@ -6,8 +6,53 @@ using MetadataExtractor.Formats.Exif;
 
 namespace ImageDownloader
 {
+    /// <summary>
+    /// FIle metatype
+    /// </summary>
+    public enum ImageKind
+    {
+        /// <summary>
+        /// Unidentified
+        /// </summary>
+        Undefined = 0,
+        /// <summary>
+        /// RAW image
+        /// </summary>
+        RAW = 1,
+        /// <summary>
+        /// JPG (non-RAW) image
+        /// </summary>
+        JPG = 2,
+        /// <summary>
+        /// Video file
+        /// </summary>
+        Video = 3
+    }
+
     public class ImageDownloader:IImageDownloader
     {
+        Configuration.Configuration m_Configuration;
+        private readonly ConfigurationProvider m_ConfigurationProvider;
+
+        public ImageDownloader()
+        { 
+            m_ConfigurationProvider = new ConfigurationProvider();
+            m_Configuration = m_ConfigurationProvider.ProvideDefaultConfiguration();            
+        }
+
+        
+
+        public void Initialize(string configurationFilePath)
+        {
+            m_Configuration = m_ConfigurationProvider.InitializeFromFile(configurationFilePath);
+        }
+
+        public void Download(string inputDrirectory)
+        {
+            var outputDirectory = !string.IsNullOrEmpty(m_Configuration.Destination) ? m_Configuration.Destination : Environment.CurrentDirectory;
+            Download(inputDrirectory, outputDirectory);
+        }
+
         public void Download(string inputDirectory, string outputDirectory)
         {
             if (!System.IO.Directory.Exists(outputDirectory))
@@ -25,24 +70,59 @@ namespace ImageDownloader
                 {
                     dateTimeTaken = exifTagDirectory.TryGetDateTime(ExifDirectoryBase.TagDateTime, out var dateTime) ? dateTime : dateTimeTaken;
                     var subDirectory = string.Empty;
-                    switch (fileInfo.Extension.ToLower())
+                    var fileClass = ClassifyFile(fileInfo.Extension.ToLower());
+                    switch (fileClass)
                     {
-                        case ".cr2":
-                        case ".arw":
-                        case ".cr3":
+                        case ImageKind.Undefined:
+                            subDirectory = "MISC";
+                            break;
+                        case ImageKind.RAW:
                             subDirectory = "RAW";
                             break;
-                        case ".jpg":
+                        case ImageKind.JPG:
                             subDirectory = "JPG";
                             break;
-                        default:
-                            break;
+                        case ImageKind.Video:
+                            subDirectory = "VIDEO";
+                            break;                        
                     }
                     var destinationPath = CreateDestinationPath(outputDirectory, dateTimeTaken, subDirectory, fileInfo.Name);
                     File.Copy(file, destinationPath, false);
-                }                
-                
+                }
+
             }
+        }
+
+        /// <summary>
+        /// Detects if a file is of a certain metatype
+        /// </summary>
+        /// <param name="fileExtension">File extension</param>
+        /// <returns>File metatype</returns>
+        private ImageKind ClassifyFile(string fileExtension)
+        {
+            if (m_Configuration.FileTypes.RawFileRypes.Contains(fileExtension))
+            {
+                return ImageKind.RAW;
+            }
+            else
+            { 
+                if (m_Configuration.FileTypes.NonRawFileRypes.Contains(fileExtension))
+                {
+                    return ImageKind.JPG;
+                }
+                else
+                {
+                    if (m_Configuration.FileTypes.VideoFileTypes.Contains(fileExtension))
+                    {
+                        return ImageKind.Video;
+                    }
+                    else
+                    {
+                        return ImageKind.Undefined;
+                    }
+                }
+            }
+
         }
 
         private string CreateDestinationPath(string outputDirectory, DateTime dateTimeTaken, string subDirectory, string fileName)

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Configuration"
+    targetNamespace="http://tempuri.org/Configuration.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://tempuri.org/Configuration.xsd"
+    xmlns:mstns="http://tempuri.org/Configuration.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <xs:element name="configuration" type="Configuration"/>
+  
+  
+  <xs:complexType name="Configuration">
+    <xs:sequence>
+      <xs:element name="FileTypes" type="FileTypes" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="Pattern" type="xs:string" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="Destination" type="xs:string" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>  
+
+  <xs:complexType name="FileTypes">
+    <xs:sequence>
+      <xs:element name="RawFileRypes" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="NonRawFileRypes" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="VideoFileTypes" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>      
+    </xs:sequence>
+  </xs:complexType>
+  
+</xs:schema>
