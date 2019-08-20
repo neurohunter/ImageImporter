@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
+using System.Linq;
 using System.Xml.Serialization;
 using ImageDownloader.Configuration;
 
 namespace ImageDownloader
-{
+{    
+    /// <summary>
+    /// Camera type (defines file types to be used)
+    /// </summary>
     public enum CameraType
     {
         Generic,
@@ -16,8 +20,16 @@ namespace ImageDownloader
         iOS,
     }
 
+    /// <summary>
+    /// Configuration provider for ImageDownloader
+    /// </summary>
     public class ConfigurationProvider
     {
+        /// <summary>
+        /// Provides default configuration per camera type
+        /// </summary>
+        /// <param name="cameraType">Camera type</param>
+        /// <returns>Default configuration</returns>
         public Configuration.Configuration ProvideDefaultConfiguration(CameraType cameraType= CameraType.Generic)
         {
             var configuration = new Configuration.Configuration
@@ -48,6 +60,35 @@ namespace ImageDownloader
             return configuration;
         }
 
+        /// <summary>
+        /// Creates a configuration from provided arguments
+        /// </summary>
+        /// <param name="rawTypes">Raw file types</param>
+        /// <param name="nonRawTypes">Non-Raw (aka jpg) file types</param>
+        /// <param name="videoTypes">Video file types</param>
+        /// <param name="destination">Destination directory</param>
+        /// <param name="pattern">Pattern to use</param>
+        /// <returns>Configuration</returns>
+        public Configuration.Configuration InitializeFromParameters(IEnumerable<string> rawTypes, IEnumerable<string> nonRawTypes, IEnumerable<string> videoTypes, string destination, string pattern)
+        {
+            return new Configuration.Configuration
+            {
+                Destination = destination,
+                Pattern = pattern,
+                FileTypes = new FileTypes
+                {
+                    RawFileRypes = rawTypes?.ToArray() ?? new string[0],
+                    NonRawFileRypes = nonRawTypes?.ToArray() ?? new string[0],
+                    VideoFileTypes = videoTypes?.ToArray() ?? new string[0],
+                }
+            };
+        }
+
+        /// <summary>
+        /// Gets configuration from a file on disk
+        /// </summary>
+        /// <param name="configurationFilePath">Path to a configuration file</param>
+        /// <returns>Configuration</returns>
         public Configuration.Configuration InitializeFromFile(string configurationFilePath)
         {
             Configuration.Configuration configurationFromFile;
@@ -55,13 +96,18 @@ namespace ImageDownloader
                 {
                     configurationFromFile = ReadConfigurationFromFile(configurationFilePath);
                 }
-            catch(Exception e)
+            catch
             {
                 configurationFromFile = ProvideDefaultConfiguration();
             }
             return configurationFromFile;
         }
 
+        /// <summary>
+        /// Wrapper for reading xml from disk
+        /// </summary>
+        /// <param name="filePath">Path to a configuration xml</param>
+        /// <returns></returns>
         internal Configuration.Configuration ReadConfigurationFromFile(string filePath)
         {
             Configuration.Configuration configuration;
