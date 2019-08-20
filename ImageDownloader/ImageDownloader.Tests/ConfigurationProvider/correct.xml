@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration xmlns="http://tempuri.org/Configuration.xsd">
+  <FileTypes>
+    <RawFileRypes>.cr2</RawFileRypes>
+    <RawFileRypes>.cr3</RawFileRypes>    
+    <NonRawFileRypes>.jpg</NonRawFileRypes>        
+    <VideoFileTypes>.mov</VideoFileTypes>
+  </FileTypes>
+  <Pattern>YYYY_MM_DD</Pattern>
+  <Destination>c:\</Destination>
+</configuration>
