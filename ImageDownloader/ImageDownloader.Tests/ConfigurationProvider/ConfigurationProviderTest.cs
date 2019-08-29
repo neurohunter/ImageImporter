@@ -1,13 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using NUnit.Framework;
 
 namespace Tests.ConfigurationProvider
 {
     public class Tests
     {
+        private const string TestDataDirectoryPath = @"TestData\ConfigurationProvider";
+
         private ImageDownloader.ConfigurationProvider m_Provider;
         [SetUp]
         public void Setup()
@@ -20,10 +21,10 @@ namespace Tests.ConfigurationProvider
             get
             {
                 yield return new TestCaseData("nonexistent.xml", typeof(System.IO.FileNotFoundException)).SetName("Non-existing configuration file");
-                yield return new TestCaseData(System.IO.Path.Combine("ConfigurationProvider","correct.xml"), null).SetName("Correct configuration file");
-                yield return new TestCaseData(System.IO.Path.Combine("ConfigurationProvider","malformed.xml"), typeof(System.InvalidOperationException)).SetName("Non-deserializable configuration file");
-                yield return new TestCaseData(System.IO.Path.Combine("ConfigurationProvider","incorrect_path.xml"), null).SetName("Deserializable incorrect configuration file");
-                yield return new TestCaseData(System.IO.Path.Combine("ConfigurationProvider","incomplete.xml"), null).SetName("Deserializable incomplete configuration file");
+                yield return new TestCaseData(System.IO.Path.Combine(TestDataDirectoryPath,"correct.xml"), null).SetName("Correct configuration file");
+                yield return new TestCaseData(System.IO.Path.Combine(TestDataDirectoryPath,"malformed.xml"), typeof(System.InvalidOperationException)).SetName("Non-deserializable configuration file");
+                yield return new TestCaseData(System.IO.Path.Combine(TestDataDirectoryPath,"incorrect_path.xml"), null).SetName("Deserializable incorrect configuration file");
+                yield return new TestCaseData(System.IO.Path.Combine(TestDataDirectoryPath,"incomplete.xml"), null).SetName("Deserializable incomplete configuration file");
             }
         }
 

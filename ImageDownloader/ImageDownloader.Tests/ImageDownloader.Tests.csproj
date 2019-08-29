@@ -17,16 +17,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="ConfigurationProvider\correct.xml">
+    <None Update="TestData\ConfigurationProvider\correct.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="ConfigurationProvider\incomplete.xml">
+    <None Update="TestData\ConfigurationProvider\incomplete.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="ConfigurationProvider\incorrect_path.xml">
+    <None Update="TestData\ConfigurationProvider\incorrect_path.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="ConfigurationProvider\malformed.xml">
+    <None Update="TestData\ConfigurationProvider\malformed.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
