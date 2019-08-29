@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using MetadataExtractor;
 using System.Linq;
@@ -29,7 +30,7 @@ namespace ImageDownloader
         Video = 3
     }
 
-    public class ImageDownloader:IImageDownloader
+    public class ImageDownloader : IImageDownloader
     {
         Configuration.Configuration m_Configuration;
         private readonly ConfigurationProvider m_ConfigurationProvider;
@@ -39,22 +40,32 @@ namespace ImageDownloader
             m_ConfigurationProvider = new ConfigurationProvider();
             m_Configuration = m_ConfigurationProvider.ProvideDefaultConfiguration();            
         }
-
         
-
+        /// <inheritdoc/>
         public void Initialize(string configurationFilePath)
         {
             m_Configuration = m_ConfigurationProvider.InitializeFromFile(configurationFilePath);
         }
-
+        
+        /// <inheritdoc/>
         public void Download(string inputDrirectory)
         {
+            //TODO just call full overload, move the rest out
             var outputDirectory = !string.IsNullOrEmpty(m_Configuration.Destination) ? m_Configuration.Destination : Environment.CurrentDirectory;
-            Download(inputDrirectory, outputDirectory);
+            Download(inputDrirectory, string.Empty);
         }
 
+        /// <inheritdoc/>
         public void Download(string inputDirectory, string outputDirectory)
         {
+            //TODO properly call ful download
+            Download(inputDirectory, outputDirectory, null, null, null, string.Empty);
+        }
+
+        /// <inheritdoc/>
+        public void Download(string inputDirectory, string outputDirectory, IEnumerable<string> rawFiles, IEnumerable<string> nonRawFiles, IEnumerable<string> videoFiles, string pattern)
+        {
+            // TODO initialize configuration and use it afterwards, do some smartguessing if parameters are not provided
             if (!System.IO.Directory.Exists(outputDirectory))
             {
                 System.IO.Directory.CreateDirectory(outputDirectory);
