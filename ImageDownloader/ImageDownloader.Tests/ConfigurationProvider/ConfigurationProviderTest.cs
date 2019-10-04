@@ -9,11 +9,11 @@ namespace Tests.ConfigurationProvider
     {
         private const string TestDataDirectoryPath = @"TestData\ConfigurationProvider";
 
-        private ImageDownloader.ConfigurationProvider m_Provider;
+        private ImageImporter.ConfigurationProvider m_Provider;
         [SetUp]
         public void Setup()
         {
-            m_Provider = new ImageDownloader.ConfigurationProvider();
+            m_Provider = new ImageImporter.ConfigurationProvider();
         }
 
         private static IEnumerable ReadConfigurationFromFileTestData

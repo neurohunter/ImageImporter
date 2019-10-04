@@ -5,7 +5,7 @@ using MetadataExtractor;
 using System.Linq;
 using MetadataExtractor.Formats.Exif;
 
-namespace ImageDownloader
+namespace ImageImporter
 {
     /// <summary>
     /// FIle metatype
@@ -30,12 +30,12 @@ namespace ImageDownloader
         Video = 3
     }
 
-    public class ImageDownloader : IImageDownloader
+    public class ImageImporter : IImageImporter
     {
         Configuration.Configuration m_Configuration;
         private readonly ConfigurationProvider m_ConfigurationProvider;
 
-        public ImageDownloader()
+        public ImageImporter()
         { 
             m_ConfigurationProvider = new ConfigurationProvider();
             m_Configuration = m_ConfigurationProvider.ProvideDefaultConfiguration();            
@@ -48,22 +48,22 @@ namespace ImageDownloader
         }
         
         /// <inheritdoc/>
-        public void Download(string inputDrirectory)
+        public void Import(string inputDrirectory)
         {
             //TODO just call full overload, move the rest out
             var outputDirectory = !string.IsNullOrEmpty(m_Configuration.Destination) ? m_Configuration.Destination : Environment.CurrentDirectory;
-            Download(inputDrirectory, string.Empty);
+            Import(inputDrirectory, string.Empty);
         }
 
         /// <inheritdoc/>
-        public void Download(string inputDirectory, string outputDirectory)
+        public void Import(string inputDirectory, string outputDirectory)
         {
             //TODO properly call ful download
-            Download(inputDirectory, outputDirectory, null, null, null, string.Empty);
+            Import(inputDirectory, outputDirectory, null, null, null, string.Empty);
         }
 
         /// <inheritdoc/>
-        public void Download(string inputDirectory, string outputDirectory, IEnumerable<string> rawFiles, IEnumerable<string> nonRawFiles, IEnumerable<string> videoFiles, string pattern)
+        public void Import(string inputDirectory, string outputDirectory, IEnumerable<string> rawFiles, IEnumerable<string> nonRawFiles, IEnumerable<string> videoFiles, string pattern)
         {
             // TODO initialize configuration and use it afterwards, do some smartguessing if parameters are not provided
             if (!System.IO.Directory.Exists(outputDirectory))

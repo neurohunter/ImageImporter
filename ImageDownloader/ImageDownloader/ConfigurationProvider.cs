@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Xml;
 using System.Linq;
 using System.Xml.Serialization;
-using ImageDownloader.Configuration;
+using ImageImporter.Configuration;
 
-namespace ImageDownloader
-{    
+namespace ImageImporter
+{
     /// <summary>
     /// Camera type (defines file types to be used)
     /// </summary>
