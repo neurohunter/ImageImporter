@@ -25,4 +25,4 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: InternalsVisibleTo("ImageDownloader.Tests")]
+[assembly: InternalsVisibleTo("ImageImporter.Tests")]

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ImageDownloader.Cli
+namespace ImageImporter.Cli
 {
     class Program
     {

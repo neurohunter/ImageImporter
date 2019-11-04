@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ImageDownloader.Cli.Framework
+namespace ImageImporter.Cli.Framework
 {
     class Program
     {
@@ -15,8 +11,8 @@ namespace ImageDownloader.Cli.Framework
             var parseResult = parser.Parse(args);
             if (!parseResult.HasErrors && !parseResult.HelpCalled)
             {
-                IImageDownloader imageDownloader = new ImageDownloader();
-                imageDownloader.Download(parser.Object.InputDirectory, parser.Object.OutputDirectory);
+                IImageImporter imageImporter = new ImageImporter();
+                imageImporter.Import(parser.Object.InputDirectory, parser.Object.OutputDirectory);
             }
             else
             {

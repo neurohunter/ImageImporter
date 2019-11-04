@@ -3,11 +3,11 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <StartupObject>ImageDownloader.Cli.Program</StartupObject>
+    <StartupObject>ImageImporter.Cli.Program</StartupObject>
     <Authors>Pavel Vishnyakov</Authors>
     <PackageId>ImageDownloader.Cli.Core</PackageId>
-    <AssemblyName>ImageDownloader.Cli.Core</AssemblyName>
-    <RootNamespace>ImageDownloader.Cli.Core</RootNamespace>
+    <AssemblyName>ImageImporter.Cli.Core</AssemblyName>
+    <RootNamespace>ImageImporter.Cli.Core</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ImageDownloader\ImageDownloader.csproj" />
+    <ProjectReference Include="..\ImageDownloader\ImageImporter.csproj" />
   </ItemGroup>
 
 </Project>

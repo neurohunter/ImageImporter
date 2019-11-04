@@ -1,4 +1,4 @@
-﻿namespace ImageDownloader.Cli.Framework
+﻿namespace ImageImporter.Cli.Framework
 {
     class Arguments
     {

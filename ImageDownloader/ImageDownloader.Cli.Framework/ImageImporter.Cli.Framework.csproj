@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{CBC0D94E-A0F5-4960-8FD4-271C6E62A217}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ImageDownloader.Cli.Framework</RootNamespace>
-    <AssemblyName>ImageDownloader.Cli</AssemblyName>
+    <RootNamespace>ImageImporter.Cli.Framework</RootNamespace>
+    <AssemblyName>ImageImporter.Cli</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -51,9 +51,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ImageDownloader\ImageDownloader.csproj">
+    <ProjectReference Include="..\ImageDownloader\ImageImporter.csproj">
       <Project>{db4ad528-3fe7-4844-9c76-4741c261bf4d}</Project>
-      <Name>ImageDownloader</Name>
+      <Name>ImageImporter</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

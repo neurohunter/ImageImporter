@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace ImageDownloader
+namespace ImageImporter
 {
-    public interface IImageDownloader
+    public interface IImageImporter
     {
         /// <summary>
         /// Initializes configuration from a configuration file
@@ -14,14 +14,14 @@ namespace ImageDownloader
         /// Gets the files from the input directory and processes them according to defined configuration
         /// </summary>
         /// <param name="inputDrirectory"></param>
-        void Download(string inputDrirectory);
+        void Import(string inputDrirectory);
 
         /// <summary>
         /// Gets the files from input directory and puts them to the ouput directory according to file types and defined patterns
         /// </summary>
         /// <param name="inputDirectory">Input directory</param>
         /// <param name="outputDirectory">Output directory</param>
-        void Download(string inputDirectory, string outputDirectory);
+        void Import(string inputDirectory, string outputDirectory);
 
         /// <summary>
         /// Gets the files from input directory and puts them to the ouput directory according to file types and defined patterns
@@ -32,6 +32,6 @@ namespace ImageDownloader
         /// <param name="nonRawFiles">File masks for non-RAW images</param>
         /// <param name="videoFiles">File masks for video files</param>
         /// <param name="pattern">Pattern to rename files to</param>
-        void Download(string inputDirectory, string outputDirectory, IEnumerable<string> rawFiles, IEnumerable<string> nonRawFiles, IEnumerable<string> videoFiles, string pattern);
+        void Import(string inputDirectory, string outputDirectory, IEnumerable<string> rawFiles, IEnumerable<string> nonRawFiles, IEnumerable<string> videoFiles, string pattern);
     }
 }
