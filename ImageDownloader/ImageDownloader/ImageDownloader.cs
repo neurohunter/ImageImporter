@@ -25,6 +25,8 @@ namespace ImageDownloader
                 CollapseWhenFinished = false,
                 DisplayTimeInRealTime = true,
                 EnableTaskBarProgress = true,
+                ForegroundColorDone = ConsoleColor.Green,
+                ForegroundColor = ConsoleColor.Yellow,
                 
             };
             using (var progressBar = new ProgressBar(filesToImport.Count, $"Importing files from {inputDirectory} to {outputDirectory}", progressBarOptions))
@@ -34,10 +36,10 @@ namespace ImageDownloader
                     var fileInfo = new FileInfo(file);
                     var metadataDirectories = ImageMetadataReader.ReadMetadata(file);
                     var dateTimeTaken = DateTime.Now;
-                    var exifTagDirectory = metadataDirectories.OfType<ExifIfd0Directory>().FirstOrDefault();
+                    var exifTagDirectory = metadataDirectories.OfType<ExifSubIfdDirectory>().FirstOrDefault();
                     if (exifTagDirectory != null)
                     {
-                        dateTimeTaken = exifTagDirectory.TryGetDateTime(ExifDirectoryBase.TagDateTime, out var dateTime) ? dateTime : dateTimeTaken;
+                        dateTimeTaken = exifTagDirectory.TryGetDateTime(ExifDirectoryBase.TagDateTimeDigitized, out var dateTime) ? dateTime : dateTimeTaken;
                         var subDirectory = string.Empty;
                         switch (fileInfo.Extension.ToLower())
                         {
