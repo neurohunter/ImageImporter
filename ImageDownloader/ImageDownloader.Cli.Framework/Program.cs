@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ImageDownloader.Cli.Framework
 {
@@ -25,12 +20,6 @@ namespace ImageDownloader.Cli.Framework
                     Console.WriteLine(parseResult.ErrorText);
                 }
             }
-            if(!Debugger.IsAttached && !parseResult.HelpCalled)
-            {
-                Console.WriteLine("Press any key to continue...");
-                Console.ReadKey();
-            }
-
         }
 
         private static Fclp.FluentCommandLineParser<Arguments> SetupParser()
