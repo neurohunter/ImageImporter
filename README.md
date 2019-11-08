@@ -1,3 +1,5 @@
+[![Build Status](https://vishnyakovpavel.visualstudio.com/ImageImporter/_apis/build/status/neurohunter.ImageImporter?branchName=master)](https://vishnyakovpavel.visualstudio.com/ImageImporter/_build/latest?definitionId=2&branchName=master)
+
 # Introduction 
 TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
 
