@@ -17,5 +17,6 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build DotNET35
       run: |
+        dir .        
         cd "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\"
         .\MSBuild.exe $Env:GITHUB_WORKSPACE\..\ImageDownloader\ImageImporter.sln /t:Compile /p:Configuration=Release
