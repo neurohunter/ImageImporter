@@ -71,36 +71,53 @@ namespace ImageImporter
                 System.IO.Directory.CreateDirectory(outputDirectory);
             }
 
-            foreach(var file in System.IO.Directory.GetFiles(inputDirectory))
-            {
-                var fileInfo = new FileInfo(file);
-                var metadataDirectories = ImageMetadataReader.ReadMetadata(file);
-                var dateTimeTaken = DateTime.Now;
-                var exifTagDirectory = metadataDirectories.OfType<ExifIfd0Directory>().FirstOrDefault();
-                if (exifTagDirectory != null)
-                {
-                    dateTimeTaken = exifTagDirectory.TryGetDateTime(ExifDirectoryBase.TagDateTime, out var dateTime) ? dateTime : dateTimeTaken;
-                    var subDirectory = string.Empty;
-                    var fileClass = ClassifyFile(fileInfo.Extension.ToLower());
-                    switch (fileClass)
-                    {
-                        case ImageKind.Undefined:
-                            subDirectory = "MISC";
-                            break;
-                        case ImageKind.RAW:
-                            subDirectory = "RAW";
-                            break;
-                        case ImageKind.JPG:
-                            subDirectory = "JPG";
-                            break;
-                        case ImageKind.Video:
-                            subDirectory = "VIDEO";
-                            break;                        
-                    }
-                    var destinationPath = CreateDestinationPath(outputDirectory, dateTimeTaken, subDirectory, fileInfo.Name);
-                    File.Copy(file, destinationPath, false);
-                }
+            var filesToImport = System.IO.Directory.GetFiles(inputDirectory).ToList();
 
+            var progressBarOptions = new ProgressBarOptions
+            {
+                ProgressBarOnBottom = true,
+                ProgressCharacter = '=',
+                CollapseWhenFinished = false,
+                DisplayTimeInRealTime = true,
+                EnableTaskBarProgress = true,
+                ForegroundColorDone = ConsoleColor.Green,
+                ForegroundColor = ConsoleColor.Yellow,
+                
+            };
+            using (var progressBar = new ProgressBar(filesToImport.Count, $"Importing files from {inputDirectory} to {outputDirectory}", progressBarOptions))
+            {
+                foreach(var file in System.IO.Directory.GetFiles(inputDirectory))
+                {
+                    var fileInfo = new FileInfo(file);
+                    var metadataDirectories = ImageMetadataReader.ReadMetadata(file);
+                    var dateTimeTaken = DateTime.Now;
+                    var exifTagDirectory = metadataDirectories.OfType<ExifSubIfdDirectory>().FirstOrDefault();
+                    if (exifTagDirectory != null)
+                    {
+                        dateTimeTaken = exifTagDirectory.TryGetDateTime(ExifDirectoryBase.TagDateTimeDigitized, out var dateTime) ? dateTime : dateTimeTaken;
+                        var subDirectory = string.Empty;
+                        var fileClass = ClassifyFile(fileInfo.Extension.ToLower());
+                        switch (fileClass)
+                        {
+                            case ImageKind.Undefined:
+                                subDirectory = "MISC";
+                                break;
+                            case ImageKind.RAW:
+                                subDirectory = "RAW";
+                                break;
+                            case ImageKind.JPG:
+                                subDirectory = "JPG";
+                                break;
+                            case ImageKind.Video:
+                                subDirectory = "VIDEO";
+                                break;                        
+                        }
+                        var destinationPath = CreateDestinationPath(outputDirectory, dateTimeTaken, subDirectory, fileInfo.Name);
+                        File.Copy(file, destinationPath, false);
+                        progressBar.Tick($"Copying {fileInfo.Name} to {subDirectory}");
+                    }
+
+                }
             }
         }
 
