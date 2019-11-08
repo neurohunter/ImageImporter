@@ -23,7 +23,6 @@ jobs:
       run: nuget restore $ENv:GITHUB_WORKSPACE\ImageDownloader\ImageDownloader.sln
     
     - name: Build DotNET35
-      run: |
-        dir .        
+      run: |        
         cd "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\"
         .\MSBuild.exe $Env:GITHUB_WORKSPACE\ImageDownloader\ImageDownloader.sln /t:Compile /p:Configuration=Release
