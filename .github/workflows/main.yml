@@ -15,6 +15,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    
+    - name: Setup Nuget.exe
+      uses: warrenbuckley/Setup-Nuget@v1
+      
+    - name: Nuget Restore
+      run: nuget restore $ENv:GITHUB_WORKSPACE\ImageDownloader\ImageDownloader.sln
+    
     - name: Build DotNET35
       run: |
         dir .        
