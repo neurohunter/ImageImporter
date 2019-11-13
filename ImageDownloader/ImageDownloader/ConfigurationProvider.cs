@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
-using ImageImporter.Configuration;
 
 namespace ImageImporter
 {
@@ -27,9 +26,9 @@ namespace ImageImporter
         /// </summary>
         /// <param name="cameraType">Camera type</param>
         /// <returns>Default configuration</returns>
-        public Configuration.Configuration ProvideDefaultConfiguration(CameraType cameraType= CameraType.Generic)
+        public Configuration ProvideDefaultConfiguration(CameraType cameraType= CameraType.Generic)
         {
-            var configuration = new Configuration.Configuration
+            var configuration = new Configuration
             { 
                 Destination = string.Empty,
                 Pattern = string.Empty,
@@ -66,9 +65,9 @@ namespace ImageImporter
         /// <param name="destination">Destination directory</param>
         /// <param name="pattern">Pattern to use</param>
         /// <returns>Configuration</returns>
-        public Configuration.Configuration InitializeFromParameters(IEnumerable<string> rawTypes, IEnumerable<string> nonRawTypes, IEnumerable<string> videoTypes, string destination, string pattern)
+        public Configuration InitializeFromParameters(IEnumerable<string> rawTypes, IEnumerable<string> nonRawTypes, IEnumerable<string> videoTypes, string destination, string pattern)
         {
-            return new Configuration.Configuration
+            return new Configuration
             {
                 Destination = destination,
                 Pattern = pattern,
@@ -86,13 +85,13 @@ namespace ImageImporter
         /// </summary>
         /// <param name="configurationFilePath">Path to a configuration file</param>
         /// <returns>Configuration</returns>
-        public Configuration.Configuration InitializeFromFile(string configurationFilePath)
+        public Configuration InitializeFromFile(string configurationFilePath)
         {
-            Configuration.Configuration configurationFromFile;
+            Configuration configurationFromFile;
             try
-                {
+            {
                     configurationFromFile = ReadConfigurationFromFile(configurationFilePath);
-                }
+            }
             catch
             {
                 configurationFromFile = ProvideDefaultConfiguration();
@@ -105,13 +104,13 @@ namespace ImageImporter
         /// </summary>
         /// <param name="filePath">Path to a configuration xml</param>
         /// <returns></returns>
-        internal Configuration.Configuration ReadConfigurationFromFile(string filePath)
+        internal Configuration ReadConfigurationFromFile(string filePath)
         {
-            Configuration.Configuration configuration;
-            var xmlReconstructionOutput = new XmlSerializer(typeof(Configuration.Configuration));            
+            Configuration configuration;
+            var xmlReconstructionOutput = new XmlSerializer(typeof(Configuration));            
             using (var stringReader =  new StringReader(File.ReadAllText(filePath)))
             {
-                configuration = (Configuration.Configuration)xmlReconstructionOutput.Deserialize(stringReader);
+                configuration = (Configuration)xmlReconstructionOutput.Deserialize(stringReader);
             }
             return configuration;
         }

@@ -19,10 +19,16 @@
 
   <xs:complexType name="FileTypes">
     <xs:sequence>
-      <xs:element name="RawFileRypes" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="NonRawFileRypes" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="VideoFileTypes" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>      
+      <xs:element name="RawFileRypes" type="FileTypeCollection" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="NonRawFileRypes" type="FileTypeCollection" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="VideoFileTypes" type="FileTypeCollection" minOccurs="0" maxOccurs="1"/>
     </xs:sequence>
   </xs:complexType>
   
+  <xs:complexType name ="FileTypeCollection">
+    <xs:sequence>
+      <xs:element name="FileType" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
 </xs:schema>
