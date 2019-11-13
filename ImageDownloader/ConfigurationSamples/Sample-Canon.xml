@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration xmlns="http://tempuri.org/Configuration.xsd">
+  <FileTypes>
+    <RawFileRypes>
+      <FileType>.cr2</FileType>
+      <FileType>.cr3</FileType>
+    </RawFileRypes>
+    <NonRawFileRypes>
+      <FileType>.jpg</FileType>
+    </NonRawFileRypes>
+    <VideoFileTypes>
+      <FileType>.mov</FileType>
+    </VideoFileTypes>
+  </FileTypes>
+  <Pattern>YYYY_MM_DD</Pattern>
+</configuration>

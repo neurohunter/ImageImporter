@@ -11,12 +11,24 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageImporter.Cli.Framework
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageImporter.Tests", "ImageDownloader.Tests\ImageImporter.Tests.csproj", "{50A18BB1-6C87-44FF-A3DB-7660BB231429}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ConfigurationSamples", "ConfigurationSamples", "{672633BD-26B9-4638-9EBF-04C6678EA398}"
+	ProjectSection(SolutionItems) = preProject
+		ConfigurationSamples\Sample-Canon.xml = ConfigurationSamples\Sample-Canon.xml
+		ConfigurationSamples\Sample-iOS.xml = ConfigurationSamples\Sample-iOS.xml
+		ConfigurationSamples\Sample-Sony.xml = ConfigurationSamples\Sample-Sony.xml
+		ConfigurationSamples\Sample.xml = ConfigurationSamples\Sample.xml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D45FAEC2-4CFD-4FA6-99AF-9730F39A1FE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D45FAEC2-4CFD-4FA6-99AF-9730F39A1FE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D45FAEC2-4CFD-4FA6-99AF-9730F39A1FE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D45FAEC2-4CFD-4FA6-99AF-9730F39A1FE0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DB4AD528-3FE7-4844-9C76-4741C261BF4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DB4AD528-3FE7-4844-9C76-4741C261BF4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB4AD528-3FE7-4844-9C76-4741C261BF4D}.Release|Any CPU.ActiveCfg = Release|Any CPU

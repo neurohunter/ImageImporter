@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration xmlns="http://tempuri.org/Configuration.xsd">
+  <FileTypes>
+    <RawFileRypes>
+      <FileType>.tiff</FileType>
+      <FileType>.dng</FileType>
+    </RawFileRypes>
+    <NonRawFileRypes>
+      <FileType>.jpg</FileType>
+      <FileType>.heic</FileType>
+    </NonRawFileRypes>
+    <VideoFileTypes>
+      <FileType>.mov</FileType>
+      <FileType>.hevc</FileType>
+    </VideoFileTypes>
+  </FileTypes>
+  <Pattern>YYYY_MM_DD</Pattern>
+</configuration>
