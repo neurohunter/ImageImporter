@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ImageImporter
 {
@@ -33,5 +34,23 @@ namespace ImageImporter
         /// <param name="videoFiles">File masks for video files</param>
         /// <param name="pattern">Pattern to rename files to</param>
         void Import(string inputDirectory, string outputDirectory, IEnumerable<string> rawFiles, IEnumerable<string> nonRawFiles, IEnumerable<string> videoFiles, string pattern);
+
+        /// <summary>
+        /// File import process has started
+        /// </summary>
+        event EventHandler<ImportEventArgs> ImportStarted;
+        /// <summary>
+        /// A file was copied
+        /// </summary>
+        event EventHandler<FileEventArgs> FileCopied;
+        /// <summary>
+        /// An error occured
+        /// </summary>
+        event EventHandler<FileEventArgs> FileFailed;
+        /// <summary>
+        /// File import process has completed
+        /// </summary>
+        event EventHandler<ImportEventArgs> ImportFinished;
+
     }
 }

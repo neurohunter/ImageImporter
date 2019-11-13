@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <PackageReference Include="MetadataExtractor" Version="2.2.0" />
-    <PackageReference Include="ShellProgressBar" Version="4.3.0" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0006" />
   </ItemGroup>
 
