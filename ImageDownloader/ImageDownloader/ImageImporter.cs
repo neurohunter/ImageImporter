@@ -4,6 +4,7 @@ using System.IO;
 using MetadataExtractor;
 using System.Linq;
 using MetadataExtractor.Formats.Exif;
+using ShellProgressBar;
 
 namespace ImageImporter
 {
