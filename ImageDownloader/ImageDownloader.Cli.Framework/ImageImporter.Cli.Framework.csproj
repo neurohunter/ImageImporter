@@ -60,6 +60,9 @@
     <PackageReference Include="FluentCommandLineParser">
       <Version>1.4.3</Version>
     </PackageReference>
+    <PackageReference Include="ShellProgressBar">
+      <Version>3.0.0</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
