@@ -3,17 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 
-namespace Tests.ConfigurationProvider
+namespace ImageImporter.Tests.ConfigurationProvider
 {
     public class Tests
     {
         private const string TestDataDirectoryPath = @"TestData\ConfigurationProvider";
 
-        private ImageImporter.ConfigurationProvider m_Provider;
+        private global::ImageImporter.ConfigurationProvider m_Provider;
         [SetUp]
         public void Setup()
         {
-            m_Provider = new ImageImporter.ConfigurationProvider();
+            m_Provider = new global::ImageImporter.ConfigurationProvider();
         }
 
         private static IEnumerable ReadConfigurationFromFileTestData
