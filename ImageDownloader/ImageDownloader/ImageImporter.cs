@@ -2,72 +2,14 @@
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.IO;
-using MetadataExtractor;
 using System.Linq;
-using MetadataExtractor.Formats.Exif;
+using ImageImporter.FileProcessor;
 
 namespace ImageImporter
 {
-    /// <summary>
-    /// FIle metatype
-    /// </summary>
-    public enum FileKind
-    {
-        /// <summary>
-        /// Unidentified
-        /// </summary>
-        [Description("MISC")]
-        Unrecognized = 0,
-        /// <summary>
-        /// RAW image
-        /// </summary>
-        [Description("RAW")]
-        RawImage = 1,
-        /// <summary>
-        /// JPG (non-RAW) image
-        /// </summary>
-        [Description("JPG")]
-        JpegImage = 2,
-        /// <summary>
-        /// Video file
-        /// </summary>
-        [Description("VIDEO")]
-        Video = 3
-    }
-
-    public class ImportEventArgs : EventArgs
-    {
-        public ImportEventArgs(string sourceDirectory, string destinationDirectory, int numberOfFiles)
-        {
-            SourceDirectory = sourceDirectory;
-            DestinationDirectory = destinationDirectory;
-            NumberOfFiles = numberOfFiles;
-        }
-
-        public string SourceDirectory {get;}
-        public string DestinationDirectory {get;}
-        public int NumberOfFiles {get;}
-    }
-
-    public class FileEventArgs : EventArgs
-    {
-        public FileEventArgs(string filename, string subDirectory, string errorMessage)
-        {
-            Filename = filename;
-            SubDirectory = subDirectory;
-            ErrorMessage = errorMessage;
-        }
-
-        public FileEventArgs(string filename, string subDirectory):this(filename, subDirectory, string.Empty){ }
-
-        public string Filename {get;}
-        public string SubDirectory {get;}
-        public string ErrorMessage {get;}
-    }
-
-
     public class ImageImporter : IImageImporter
     {
+        private readonly FileProcessorFactory m_FileProcessorFactory;
         Configuration m_Configuration;
         private readonly ConfigurationProvider m_ConfigurationProvider;
 
@@ -102,10 +44,10 @@ namespace ImageImporter
         #endregion
 
         public ImageImporter()
-        { 
+        {
+            m_FileProcessorFactory = new FileProcessorFactory();
             m_ConfigurationProvider = new ConfigurationProvider();
             m_Configuration = m_ConfigurationProvider.ProvideDefaultConfiguration();
-            
         }
         
         /// <inheritdoc/>
@@ -152,37 +94,34 @@ namespace ImageImporter
         /// <summary>
         /// Processes a single file in an input directory
         /// </summary>
-        /// <param name="fileInfo">File to process</param>
+        /// <param name="inputFile">File to process</param>
         /// <param name="outputDirectory">Directory to put processed file to</param>
-        private void ProcessSingleFile(FileInfo fileInfo, string outputDirectory)
+        private void ProcessSingleFile(FileInfo inputFile, string outputDirectory)
         {
-            var subDirectory = string.Empty;
-            var dateTimeTaken = DateTime.Now;
+            FileKind fileKind = ClassifyFile(inputFile.Extension.ToLower());
+            string subDirectory = fileKind.GetAttributeOfType<DescriptionAttribute>().Description;
+            string destinationPath = string.Empty;
             try
             {
-                var metadataDirectories = ImageMetadataReader.ReadMetadata(fileInfo.FullName);
-                var exifTagDirectory = metadataDirectories.OfType<ExifSubIfdDirectory>().FirstOrDefault();
-                if (exifTagDirectory != null)
-                {
-                    dateTimeTaken = exifTagDirectory.TryGetDateTime(ExifDirectoryBase.TagDateTimeDigitized, out var dateTime) ? dateTime : dateTimeTaken;
-                    var fileClass = ClassifyFile(fileInfo.Extension.ToLower());
-                    subDirectory = fileClass.GetAttributeOfType<DescriptionAttribute>().Description;
-                }
+                destinationPath = m_FileProcessorFactory.ProvideProcessorForFile(fileKind).Process(inputFile, fileKind, outputDirectory);
+            }
+            catch (FileProcessorException)
+            {
+                destinationPath = m_FileProcessorFactory.ProvideProcessorForFile(FileKind.Unrecognized).Process(inputFile, FileKind.Unrecognized, outputDirectory);
             }
             catch (Exception e)
             {
-                subDirectory = FileKind.Unrecognized.GetAttributeOfType<DescriptionAttribute>().Description;
-                OnFileFailed(new FileEventArgs(fileInfo.Name, subDirectory, e.Message));
+                OnFileFailed(new FileEventArgs(inputFile.Name, subDirectory, e.Message));
             }
-            var destinationPath = CreateDestinationPath(outputDirectory, dateTimeTaken, subDirectory, fileInfo.Name);
+
             if (File.Exists(destinationPath))
             {
-                OnFileFailed(new FileEventArgs(fileInfo.Name, subDirectory, $"{fileInfo.Name} already exists in {subDirectory}"));
+                OnFileFailed(new FileEventArgs(inputFile.Name, subDirectory, $"{inputFile.Name} already exists in {subDirectory}"));
             }
             else
             {
-                File.Copy(fileInfo.FullName, destinationPath, false);
-                OnFileCopied(new FileEventArgs(fileInfo.Name, subDirectory));
+                File.Copy(inputFile.FullName, destinationPath, false);
+                OnFileCopied(new FileEventArgs(inputFile.Name, subDirectory));
             }
         }
 
@@ -202,17 +141,6 @@ namespace ImageImporter
                 return FileKind.JpegImage;
             }
             return m_Configuration.FileTypes.VideoFileTypes.Contains(fileExtension) ? FileKind.Video : FileKind.Unrecognized;
-        }
-
-        private string CreateDestinationPath(string outputDirectory, DateTime dateTimeTaken, string subDirectory, string fileName)
-        {
-            var dateAsString = dateTimeTaken.Date.ToString("yyyy_MM_dd");
-            var directory = Path.Combine(outputDirectory, dateAsString, subDirectory);
-            if (!System.IO.Directory.Exists(directory))
-            {
-                System.IO.Directory.CreateDirectory(directory);
-            }
-            return Path.Combine(directory, fileName);
         }
     }
 }
