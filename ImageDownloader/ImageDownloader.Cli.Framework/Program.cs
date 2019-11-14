@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ShellProgressBar;
 
 namespace ImageImporter.Cli.Framework
@@ -9,7 +10,6 @@ namespace ImageImporter.Cli.Framework
 
         static void Main(string[] args)
         {
-            
             var parser = SetupParser();
             var parseResult = parser.Parse(args);
             if (!parseResult.HasErrors && !parseResult.HelpCalled)
@@ -19,11 +19,15 @@ namespace ImageImporter.Cli.Framework
                 imageImporter.FileCopied += FileCopied;
                 imageImporter.FileFailed += FileFailed;
                 imageImporter.ImportFinished += ImportFinished;
-                if (!string.IsNullOrEmpty(parser.Object.ConfigurationPath) && System.IO.File.Exists(parser.Object.ConfigurationPath))
+                if (System.IO.File.Exists(parser.Object.ConfigurationPath))
                 {
                     imageImporter.Initialize(parser.Object.ConfigurationPath);
+                    imageImporter.Import(parser.Object.InputDirectory, parser.Object.OutputDirectory);
                 }
-                imageImporter.Import(parser.Object.InputDirectory, parser.Object.OutputDirectory);
+                else
+                {
+                    imageImporter.Import(parser.Object.InputDirectory, parser.Object.OutputDirectory, parser.Object.RawFileExtensions, parser.Object.NonRawFileExtensions, parser.Object.VideoFileExtensions, string.Empty);
+                }
             }
             else
             {
@@ -83,6 +87,18 @@ namespace ImageImporter.Cli.Framework
             parser.Setup(a => a.ConfigurationPath)
                 .As('c', "configuration-path")
                 .WithDescription("Path to a configuration xml file");
+            parser.Setup<List<string>>(a => a.RawFileExtensions)
+                .As('r', "raw-types")
+                .WithDescription("Extensions for RAW images (e.g. -r .ext1 .ext2)")
+                .SetDefault(new List<string>());
+            parser.Setup<List<string>>(a => a.NonRawFileExtensions)
+                .As('n', "non-raw-types")
+                .WithDescription("Extensions for non-RAW images (e.g. JPEG) (i.e. -r .ext1 .ext2)")
+                .SetDefault(new List<string>());
+            parser.Setup<List<string>>(a => a.VideoFileExtensions)
+                .As('v', "video-types")
+                .WithDescription("Extensions for video files (i.e. -r .ext1 .ext2)")
+                .SetDefault(new List<string>());
             return parser;
         }
     }
