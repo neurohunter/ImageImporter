@@ -13,5 +13,5 @@
     </VideoFileTypes>
   </FileTypes>
   <Pattern>SomeRandomPattern</Pattern>
-  <Destination>c:\</Destination>
+  <Destination>Output</Destination>
 </configuration>
