@@ -19,14 +19,15 @@ namespace ImageImporter.Cli.Framework
                 imageImporter.FileCopied += FileCopied;
                 imageImporter.FileFailed += FileFailed;
                 imageImporter.ImportFinished += ImportFinished;
-                if (System.IO.File.Exists(parser.Object.ConfigurationPath))
+                var arguments = parser.Object;
+                if (System.IO.File.Exists(arguments.ConfigurationPath))
                 {
-                    imageImporter.Initialize(parser.Object.ConfigurationPath);
-                    imageImporter.Import(parser.Object.InputDirectory, parser.Object.OutputDirectory);
+                    imageImporter.Initialize(arguments.ConfigurationPath);
+                    imageImporter.Import(arguments.InputDirectory, arguments.NoPathProvided ? string.Empty : arguments.OutputDirectory);
                 }
                 else
                 {
-                    imageImporter.Import(parser.Object.InputDirectory, parser.Object.OutputDirectory, parser.Object.RawFileExtensions, parser.Object.NonRawFileExtensions, parser.Object.VideoFileExtensions, string.Empty);
+                    imageImporter.Import(arguments.InputDirectory, arguments.OutputDirectory, arguments.RawFileExtensions, arguments.NonRawFileExtensions, arguments.VideoFileExtensions, string.Empty);
                 }
             }
             else
@@ -79,7 +80,7 @@ namespace ImageImporter.Cli.Framework
             parser.Setup(a => a.InputDirectory)
                 .As('i', "input-directory")
                 .WithDescription("Input directory with image files")
-                .Required();
+                .Required();                
             parser.Setup(a => a.OutputDirectory)
                 .As('o', "output-directory")
                 .WithDescription("Directory to put files to (will be created if absent)")

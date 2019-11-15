@@ -75,20 +75,45 @@ namespace ImageImporter
             Configuration.FileTypes.RawFileTypes = rawFiles.ToArray();
             Configuration.FileTypes.NonRawFileTypes = nonRawFiles.ToArray();
             Configuration.FileTypes.VideoFileTypes = videoFiles.ToArray();
-            if (!System.IO.Directory.Exists(outputDirectory))
+            var outputPath = DetermineOutputPath(outputDirectory);
+            if (!Directory.Exists(outputPath))
             {
-                System.IO.Directory.CreateDirectory(outputDirectory);
+                Directory.CreateDirectory(outputPath);
             }
 
-            var filesToImport = System.IO.Directory.GetFiles(inputDirectory).ToList();
+            var filesToImport = Directory.GetFiles(inputDirectory).ToList();
 
-            OnImportStarted(new ImportEventArgs(inputDirectory, outputDirectory, filesToImport.Count));
-            foreach(var file in System.IO.Directory.GetFiles(inputDirectory))
+            OnImportStarted(new ImportEventArgs(inputDirectory, outputPath, filesToImport.Count));
+            foreach(var file in Directory.GetFiles(inputDirectory))
             {
                 var fileInfo = new FileInfo(file);
-                ProcessSingleFile(fileInfo, outputDirectory);
+                ProcessSingleFile(fileInfo, outputPath);
             }
-            OnImportFinished(new ImportEventArgs(inputDirectory, outputDirectory, filesToImport.Count));
+            OnImportFinished(new ImportEventArgs(inputDirectory, outputPath, filesToImport.Count));
+        }
+
+        /// <summary>
+        /// Determine output directory w.r.t passed parameter and configuration
+        /// </summary>
+        /// <param name="outputDirectory">Output directory passed in as a command-line argument</param>
+        /// <returns>Directory to import data to</returns>
+        private string DetermineOutputPath(string outputDirectory)
+        {
+            if (string.IsNullOrEmpty(outputDirectory))
+            {
+                return Configuration.Destination;
+            }
+            else
+            {
+                if (Path.IsPathRooted(outputDirectory))
+                {
+                    return outputDirectory;
+                }
+                else
+                {
+                    return Path.Combine(Environment.CurrentDirectory, outputDirectory);
+                }
+            }
         }
 
         /// <summary>

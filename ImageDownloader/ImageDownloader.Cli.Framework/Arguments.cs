@@ -4,6 +4,10 @@ namespace ImageImporter.Cli.Framework
 {
     internal class Arguments
     {
+        public bool NoPathProvided
+        {
+            get => OutputDirectory.Equals(System.Environment.CurrentDirectory);
+        }
         public string InputDirectory { set; get; }
         public string OutputDirectory { set; get; }
         public string ConfigurationPath {set;get;}
