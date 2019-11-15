@@ -2,6 +2,8 @@
 using System.IO;
 using NUnit.Framework;
 using Importer = ImageImporter.ImageImporter;
+using ImageImporter.Tests.Utilities;
+using System.Collections.Generic;
 
 namespace ImageImporter.Tests.ImageImporter
 {
@@ -38,8 +40,13 @@ namespace ImageImporter.Tests.ImageImporter
         {
             var configurationFile = Path.Combine(TestDataDirectoryPath, "..", "ConfigurationProvider", "correct.xml");
             m_ImageImporter.Initialize(configurationFile);
-
-            Assert.IsNotNull(m_ImageImporter.Configuration);
+            TestUtilities.ValidateConfiguration(
+                    m_ImageImporter.Configuration,
+                    new List<string>{".ext1", ".ext2" },new List<string>{".ext3"},new List<string>{".ext4"},
+                    "*",
+                    "*"
+                    );
+            
         }
 
         [TestCase(true)]

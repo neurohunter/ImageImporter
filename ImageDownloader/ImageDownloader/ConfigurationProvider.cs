@@ -67,10 +67,11 @@ namespace ImageImporter
         /// <returns>Configuration</returns>
         public Configuration InitializeFromParameters(IEnumerable<string> rawTypes, IEnumerable<string> nonRawTypes, IEnumerable<string> videoTypes, string destination, string pattern)
         {
+            var destinationPath = string.IsNullOrEmpty(destination) ? string.Empty : destination;
             return new Configuration
             {
-                Destination = destination,
-                Pattern = pattern,
+                Destination = System.IO.Path.IsPathRooted(destinationPath) ? destinationPath : System.IO.Path.Combine(System.Environment.CurrentDirectory, destinationPath),
+                Pattern = string.IsNullOrEmpty(pattern) ? string.Empty : pattern,
                 FileTypes = new FileTypes
                 {
                     RawFileTypes = rawTypes?.ToArray() ?? new string[0],

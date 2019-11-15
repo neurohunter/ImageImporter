@@ -14,29 +14,22 @@ namespace ImageImporter.Tests.Utilities
             Assert.Multiple(() => 
                 { 
                     Assert.IsNotNull(configuration);
-                    if (ReferenceEquals(expectedDestination,null))
+                    Assert.IsNotNull(configuration.Destination);
+                    if (string.IsNullOrEmpty(expectedDestination) || expectedDestination.Equals("*"))
                     {
-                        Assert.IsNull(configuration.Destination);
+                        Assert.IsNotEmpty(configuration.Destination);
                     }
                     else
                     {
-                        Assert.IsNotNull(configuration.Destination);
-                        if (expectedDestination.Equals("*"))
-                        {
-                            Assert.IsNotEmpty(configuration.Destination);
-                        }
-                        else
-                        {
-                            Assert.AreEqual(expectedDestination, configuration.Destination);
-                        }
+                        Assert.AreEqual(expectedDestination, configuration.Destination);
                     }
-                    if (ReferenceEquals(expectedPattern, null))
+                    Assert.IsNotNull(configuration.Pattern);
+                    if (string.IsNullOrEmpty(expectedPattern))
                     {
-                        Assert.IsNull(configuration.Pattern);
+                        Assert.IsEmpty(configuration.Pattern);
                     }
                     else
                     {
-                        Assert.IsNotNull(configuration.Pattern);
                         if (expectedPattern.Equals("*"))
                         {
                             Assert.IsNotEmpty(configuration.Pattern);
