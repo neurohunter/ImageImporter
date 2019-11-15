@@ -6,6 +6,11 @@ namespace ImageImporter
     public interface IImageImporter
     {
         /// <summary>
+        /// ImageImporter configuration
+        /// </summary>
+        Configuration Configuration{get;}
+
+        /// <summary>
         /// Initializes configuration from a configuration file
         /// </summary>
         /// <param name="configurationFilePath">Path to a configuration file</param>

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <configuration xmlns="http://tempuri.org/Configuration.xsd">
   <FileTypes>
-    <RawFileRypes>
+    <RawFileTypes>
       <FileType>.tiff</FileType>
       <FileType>.dng</FileType>
-    </RawFileRypes>
-    <NonRawFileRypes>
+    </RawFileTypes>
+    <NonRawFileTypes>
       <FileType>.jpg</FileType>
       <FileType>.heic</FileType>
-    </NonRawFileRypes>
+    </NonRawFileTypes>
     <VideoFileTypes>
       <FileType>.mov</FileType>
       <FileType>.hevc</FileType>

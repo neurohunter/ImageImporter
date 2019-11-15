@@ -10,7 +10,7 @@ namespace ImageImporter
     public class ImageImporter : IImageImporter
     {
         private readonly FileProcessorFactory m_FileProcessorFactory;
-        Configuration m_Configuration;
+        public Configuration Configuration {get; private set;}
         private readonly ConfigurationProvider m_ConfigurationProvider;
 
         #region Events
@@ -47,34 +47,34 @@ namespace ImageImporter
         {
             m_FileProcessorFactory = new FileProcessorFactory();
             m_ConfigurationProvider = new ConfigurationProvider();
-            m_Configuration = m_ConfigurationProvider.ProvideDefaultConfiguration();
+            Configuration = m_ConfigurationProvider.ProvideDefaultConfiguration();
         }
         
         /// <inheritdoc/>
         public void Initialize(string configurationFilePath)
         {
-            m_Configuration = m_ConfigurationProvider.InitializeFromFile(configurationFilePath);
+            Configuration = m_ConfigurationProvider.InitializeFromFile(configurationFilePath);
         }
         
         /// <inheritdoc/>
         public void Import(string inputDrirectory)
         {
-            var outputDirectory = !string.IsNullOrEmpty(m_Configuration.Destination) ? m_Configuration.Destination : Environment.CurrentDirectory;
-            Import(inputDrirectory, outputDirectory, m_Configuration.FileTypes.RawFileRypes, m_Configuration.FileTypes.NonRawFileRypes, m_Configuration.FileTypes.VideoFileTypes, string.Empty);
+            var outputDirectory = !string.IsNullOrEmpty(Configuration.Destination) ? Configuration.Destination : Environment.CurrentDirectory;
+            Import(inputDrirectory, outputDirectory, Configuration.FileTypes.RawFileTypes, Configuration.FileTypes.NonRawFileTypes, Configuration.FileTypes.VideoFileTypes, string.Empty);
         }
 
         /// <inheritdoc/>
         public void Import(string inputDirectory, string outputDirectory)
         {
-            Import(inputDirectory, outputDirectory, m_Configuration.FileTypes.RawFileRypes, m_Configuration.FileTypes.NonRawFileRypes, m_Configuration.FileTypes.VideoFileTypes, string.Empty);
+            Import(inputDirectory, outputDirectory, Configuration.FileTypes.RawFileTypes, Configuration.FileTypes.NonRawFileTypes, Configuration.FileTypes.VideoFileTypes, string.Empty);
         }
 
         /// <inheritdoc/>
         public void Import(string inputDirectory, string outputDirectory, IEnumerable<string> rawFiles, IEnumerable<string> nonRawFiles, IEnumerable<string> videoFiles, string pattern)
         {
-            m_Configuration.FileTypes.RawFileRypes = rawFiles.ToArray();
-            m_Configuration.FileTypes.NonRawFileRypes = nonRawFiles.ToArray();
-            m_Configuration.FileTypes.VideoFileTypes = videoFiles.ToArray();
+            Configuration.FileTypes.RawFileTypes = rawFiles.ToArray();
+            Configuration.FileTypes.NonRawFileTypes = nonRawFiles.ToArray();
+            Configuration.FileTypes.VideoFileTypes = videoFiles.ToArray();
             if (!System.IO.Directory.Exists(outputDirectory))
             {
                 System.IO.Directory.CreateDirectory(outputDirectory);
@@ -132,15 +132,15 @@ namespace ImageImporter
         /// <returns>File metatype</returns>
         private FileKind ClassifyFile(string fileExtension)
         {
-            if (m_Configuration.FileTypes.RawFileRypes.Contains(fileExtension))
+            if (Configuration.FileTypes.RawFileTypes.Contains(fileExtension))
             {
                 return FileKind.RawImage;
             }
-            if (m_Configuration.FileTypes.NonRawFileRypes.Contains(fileExtension))
+            if (Configuration.FileTypes.NonRawFileTypes.Contains(fileExtension))
             {
                 return FileKind.JpegImage;
             }
-            return m_Configuration.FileTypes.VideoFileTypes.Contains(fileExtension) ? FileKind.Video : FileKind.Unrecognized;
+            return Configuration.FileTypes.VideoFileTypes.Contains(fileExtension) ? FileKind.Video : FileKind.Unrecognized;
         }
     }
 }

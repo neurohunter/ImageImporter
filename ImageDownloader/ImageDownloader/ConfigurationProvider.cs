@@ -39,8 +39,8 @@ namespace ImageImporter
                     configuration.FileTypes = new FileTypes
                     {                    
                         VideoFileTypes = new string[0],
-                        RawFileRypes = new string[0],
-                        NonRawFileRypes = new string[0]
+                        RawFileTypes = new string[0],
+                        NonRawFileTypes = new string[0]
                     };
                     break;
                 case CameraType.Canon:
@@ -73,8 +73,8 @@ namespace ImageImporter
                 Pattern = pattern,
                 FileTypes = new FileTypes
                 {
-                    RawFileRypes = rawTypes?.ToArray() ?? new string[0],
-                    NonRawFileRypes = nonRawTypes?.ToArray() ?? new string[0],
+                    RawFileTypes = rawTypes?.ToArray() ?? new string[0],
+                    NonRawFileTypes = nonRawTypes?.ToArray() ?? new string[0],
                     VideoFileTypes = videoTypes?.ToArray() ?? new string[0],
                 }
             };
@@ -122,8 +122,8 @@ namespace ImageImporter
         {
             return new FileTypes
             {
-                NonRawFileRypes = new []{ ".jpg" },
-                RawFileRypes = new [] { ".cr2", ".cr3"},
+                NonRawFileTypes = new []{ ".jpg" },
+                RawFileTypes = new [] { ".cr2", ".cr3"},
                 VideoFileTypes = new [] { ".mov"}
             };
         }
@@ -135,8 +135,8 @@ namespace ImageImporter
         { 
             return new FileTypes
             {
-                NonRawFileRypes = new []{ ".jpg" },
-                RawFileRypes = new [] { ".arw"},
+                NonRawFileTypes = new []{ ".jpg" },
+                RawFileTypes = new [] { ".arw"},
                 VideoFileTypes = new [] { ".mov"}
             };
         }
@@ -148,8 +148,8 @@ namespace ImageImporter
         { 
             return new FileTypes
             {
-                NonRawFileRypes = new []{ ".jpg", ".heic" },
-                RawFileRypes = new [] { ".tiff", ".dng"},
+                NonRawFileTypes = new []{ ".jpg", ".heic" },
+                RawFileTypes = new [] { ".tiff", ".dng"},
                 VideoFileTypes = new [] { ".mov", ".hevc"}
             };
         }
