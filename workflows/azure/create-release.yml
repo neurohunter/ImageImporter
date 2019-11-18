@@ -40,7 +40,7 @@ steps:
   inputs:
     sourceFolder: '$(Build.SourcesDirectory)'
     contents: '**/$(BuildConfiguration)/**/?(*.exe|*.dll|*.pdb)'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    TargetFolder: '$(Build.BinariesDirectory)'
 
 - task: PowerShell@2
   inputs:
@@ -48,7 +48,7 @@ steps:
     script: |
       # Write your PowerShell commands here.
       
-      Get-ChildItem $(Build.ArtifactStagingDirectory)
+      Get-ChildItem $(Build.BinariesDirectory)
     errorActionPreference: 'silentlyContinue'
     
 - task: ArchiveFiles@2
@@ -56,7 +56,7 @@ steps:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
     includeRootFolder: true
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(projectName)_v$(MajorVersion).$(MinorVersion).$(IncrementReleaseTagNumber).zip'
+    archiveFile: '$(Build.BinariesDirectory)/$(projectName)_v$(MajorVersion).$(MinorVersion).$(IncrementReleaseTagNumber).zip'
     replaceExistingArchive: true
 
 - task: PowerShell@2
@@ -65,7 +65,7 @@ steps:
     script: |
       # Write your PowerShell commands here.
       
-      Get-ChildItem $(Build.ArtifactStagingDirectory)/$(projectName)_v$(MajorVersion).$(MinorVersion).$(IncrementReleaseTagNumber).zip
+      Get-ChildItem $(Build.BinariesDirectory)/$(projectName)_v$(MajorVersion).$(MinorVersion).$(IncrementReleaseTagNumber).zip
     errorActionPreference: 'silentlyContinue'
 
 - task: GitHubRelease@1
@@ -78,4 +78,4 @@ steps:
     addChangeLog: false
     tagSource: userSpecifiedTag
     tag: v.$(MajorVersion).$(MinorVersion).$(IncrementReleaseTagNumber)
-    assets: '$(Build.ArtifactStagingDirectory)/$(projectName)_v$(MajorVersion).$(MinorVersion).$(IncrementReleaseTagNumber).zip'
+    assets: '$(Build.BinariesDirectory)/$(projectName)_v$(MajorVersion).$(MinorVersion).$(IncrementReleaseTagNumber).zip'
