@@ -48,7 +48,7 @@ steps:
       # Write your PowerShell commands here.
       
       Get-ChildItem $(Build.ArtifactStagingDirectory)
-    errorActionPreference: 'silentlyContinue''
+    errorActionPreference: 'silentlyContinue'
 
 - task: GitHubRelease@1
   displayName: 'GitHub Release'
