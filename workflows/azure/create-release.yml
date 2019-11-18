@@ -41,6 +41,15 @@ steps:
     contents: '**/$(BuildConfiguration)/**/?(*.exe|*.dll|*.pdb)'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your PowerShell commands here.
+      
+      Get-ChildItem $(Build.ArtifactStagingDirectory)
+    errorActionPreference: 'silentlyContinue''
+
 - task: GitHubRelease@1
   displayName: 'GitHub Release'
   inputs:
