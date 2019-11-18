@@ -5,7 +5,9 @@
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
 
 trigger:
-- master
+    branches:
+        include:
+            - '*'
 
 pool:
   vmImage: 'windows-latest'
@@ -37,9 +39,3 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'ImageImporter'
-    publishLocation: 'Container'
