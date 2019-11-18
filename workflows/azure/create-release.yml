@@ -60,3 +60,4 @@ steps:
     addChangeLog: false
     tagSource: userSpecifiedTag
     tag: v$(MajorVersion).$(MinorVersion).$(IncrementReleaseTagNumber)
+    assets: '$(Build.ArtifactStagingDirectory)/ImageDownloader/ImageDownloader.Cli.Framework/bin/Release/*'
