@@ -5,7 +5,9 @@
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
 
 trigger:
-- master
+    branches:
+        include:
+            - '*'
 
 pool:
   vmImage: 'windows-latest'
