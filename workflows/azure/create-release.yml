@@ -53,11 +53,11 @@ steps:
     
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '$(Build.BinariesDirectory)'
-    includeRootFolder: true
+    rootFolderOrFile: '$(Build.BinariesDirectory)/ImageDownloader/ImageDownloader.CLi.Framework/bin/Release'
+    includeRootFolder: false
     archiveType: 'zip'
     archiveFile: '$(Build.BinariesDirectory)/$(projectName)_v$(MajorVersion).$(MinorVersion).$(IncrementReleaseTagNumber).zip'
-    replaceExistingArchive: true
+    replaceExistingArchive: true    
 
 - task: PowerShell@2
   inputs:
