@@ -7,6 +7,7 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  projectName: 'ImageImporter'
   MajorVersion: 1
   MinorVersion: 0
   InitialReleaseTagNumber: 1
@@ -55,7 +56,7 @@ steps:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
     includeRootFolder: true
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(projectName)v$(MajorVersion).$(MinorVersion).$(IncrementReleaseTagNumber).zip'
     replaceExistingArchive: true
 
 - task: PowerShell@2
@@ -64,10 +65,11 @@ steps:
     script: |
       # Write your PowerShell commands here.
       
-      Get-ChildItem $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+      Get-ChildItem $(Build.ArtifactStagingDirectory)/$(projectName)v$(MajorVersion).$(MinorVersion).$(IncrementReleaseTagNumber).zip
     errorActionPreference: 'silentlyContinue'
 
 - task: GitHubRelease@1
+  enabled: false
   displayName: 'GitHub Release'
   inputs:
     gitHubConnection: 'github.com_neurohunter'
