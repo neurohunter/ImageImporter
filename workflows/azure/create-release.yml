@@ -56,7 +56,7 @@ steps:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
     includeRootFolder: true
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(projectName)v$(MajorVersion).$(MinorVersion).$(IncrementReleaseTagNumber).zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(projectName)_v$(MajorVersion).$(MinorVersion).$(IncrementReleaseTagNumber).zip'
     replaceExistingArchive: true
 
 - task: PowerShell@2
@@ -65,11 +65,10 @@ steps:
     script: |
       # Write your PowerShell commands here.
       
-      Get-ChildItem $(Build.ArtifactStagingDirectory)/$(projectName)v$(MajorVersion).$(MinorVersion).$(IncrementReleaseTagNumber).zip
+      Get-ChildItem $(Build.ArtifactStagingDirectory)/$(projectName)_v$(MajorVersion).$(MinorVersion).$(IncrementReleaseTagNumber).zip
     errorActionPreference: 'silentlyContinue'
 
 - task: GitHubRelease@1
-  enabled: false
   displayName: 'GitHub Release'
   inputs:
     gitHubConnection: 'github.com_neurohunter'
@@ -79,4 +78,4 @@ steps:
     addChangeLog: false
     tagSource: userSpecifiedTag
     tag: v$(MajorVersion).$(MinorVersion).$(IncrementReleaseTagNumber)
-    assets: '$(Build.ArtifactStagingDirectory)/ImageDownloader/ImageDownloader.Cli.Framework/bin/Release/*'
+    assets: '$(Build.ArtifactStagingDirectory)/$(projectName)_v$(MajorVersion).$(MinorVersion).$(IncrementReleaseTagNumber).zip'
