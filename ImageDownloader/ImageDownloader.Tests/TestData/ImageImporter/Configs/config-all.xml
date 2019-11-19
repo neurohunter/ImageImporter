@@ -6,7 +6,6 @@
     </RawFileTypes>
     <NonRawFileTypes>
       <FileType>.jpg</FileType>
-      <FileType>.heic</FileType>
     </NonRawFileTypes>
     <VideoFileTypes>
       <FileType>.mov</FileType>
