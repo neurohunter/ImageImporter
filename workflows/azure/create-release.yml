@@ -14,7 +14,9 @@ variables:
   IncrementReleaseTagNumber: $[counter(variables['InitialReleaseTagNumber'], 0)]
 
 trigger:
-- master
+  branches:
+    include:
+      - master
 
 pool:
   vmImage: 'windows-latest'
