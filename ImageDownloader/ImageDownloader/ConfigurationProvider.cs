@@ -91,7 +91,28 @@ namespace ImageImporter
             Configuration configurationFromFile;
             try
             {
-                    configurationFromFile = ReadConfigurationFromFile(configurationFilePath);
+                configurationFromFile = ReadConfigurationFromFile(configurationFilePath);
+                    
+                if (string.IsNullOrEmpty(configurationFromFile.Destination))
+                {
+                    configurationFromFile.Destination = string.Empty;
+                }
+                if (configurationFromFile.FileTypes.NonRawFileTypes == null)
+                {
+                    configurationFromFile.FileTypes.NonRawFileTypes = System.Array.Empty<string>();
+                }
+                if (configurationFromFile.FileTypes.RawFileTypes == null)
+                {
+                    configurationFromFile.FileTypes.RawFileTypes = System.Array.Empty<string>();
+                }
+                if (configurationFromFile.FileTypes.VideoFileTypes == null)
+                {
+                    configurationFromFile.FileTypes.VideoFileTypes = System.Array.Empty<string>();
+                }
+                if (string.IsNullOrEmpty(configurationFromFile.Pattern))
+                {
+                    configurationFromFile.Pattern = string.Empty;
+                }
             }
             catch
             {
