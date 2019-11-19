@@ -1,0 +1,81 @@
+# .NET Desktop
+# Build and run tests for .NET Desktop or Windows classic desktop solutions.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+  projectName: 'ImageImporter'
+  MajorVersion: 1
+  MinorVersion: 0
+  InitialReleaseTagNumber: 1
+  IncrementReleaseTagNumber: $[counter(variables['InitialReleaseTagNumber'], 0)]
+
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
+
+- task: VSBuild@1
+  inputs:
+    solution: '$(solution)'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+- task: VSTest@1
+  inputs:
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(Build.SourcesDirectory)'
+    contents: '**/$(BuildConfiguration)/**/?(*.exe|*.dll|*.pdb)'
+    TargetFolder: '$(Build.BinariesDirectory)'
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your PowerShell commands here.
+      
+      Get-ChildItem $(Build.BinariesDirectory)
+    errorActionPreference: 'silentlyContinue'
+    
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.BinariesDirectory)/ImageDownloader/ImageDownloader.CLi.Framework/bin/Release'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.BinariesDirectory)/$(projectName)_v$(MajorVersion).$(MinorVersion).$(IncrementReleaseTagNumber).zip'
+    replaceExistingArchive: true    
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your PowerShell commands here.
+      
+      Get-ChildItem $(Build.BinariesDirectory)/$(projectName)_v$(MajorVersion).$(MinorVersion).$(IncrementReleaseTagNumber).zip
+    errorActionPreference: 'silentlyContinue'
+
+- task: GitHubRelease@1
+  displayName: 'GitHub Release'
+  inputs:
+    gitHubConnection: 'github.com_neurohunter'
+    repositoryName: '$(Build.Repository.Name)'
+    action: 'create'
+    target: '$(Build.SourceVersion)'
+    addChangeLog: false
+    tagSource: userSpecifiedTag
+    tag: v.$(MajorVersion).$(MinorVersion).$(IncrementReleaseTagNumber)
+    assets: '$(Build.BinariesDirectory)/$(projectName)_v$(MajorVersion).$(MinorVersion).$(IncrementReleaseTagNumber).zip'
