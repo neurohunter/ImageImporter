@@ -18,6 +18,7 @@ namespace ImageImporter.Tests.ImageImporter
         private List<string> m_RawFiles = new List<string>{ ".cr2"};
         private List<string> m_NonRawFiles = new List<string>{ ".jpg"};
         private List<string> m_VideoFiles = new List<string>{ ".mov"};
+        private List<ImageImporterTestFileDescription> m_ReferenceFileDescriptions;
         private string m_OutputDirectory;
         private IImageImporter m_ImageImporter;
 
@@ -30,6 +31,12 @@ namespace ImageImporter.Tests.ImageImporter
                 Directory.Delete(m_OutputDirectory, true);
             }
             Directory.CreateDirectory(m_OutputDirectory);
+            m_ReferenceFileDescriptions = new List<ImageImporterTestFileDescription>
+            {
+                new ImageImporterTestFileDescription("IMG_5283.CR2", new DateTime(2015, 06, 15), new DateTime(2019, 11, 15), FileKind.RawImage),
+                new ImageImporterTestFileDescription("IMG_2584.heic", new DateTime(2015, 06, 15), new DateTime(2019, 11, 15), FileKind.Unrecognized),
+                new ImageImporterTestFileDescription("2016-02-27 10.46.01.jpg", new DateTime(2016, 02, 27), new DateTime(2019, 11, 15), FileKind.JpegImage),
+            };
             m_ImageImporter = new Importer();
         }
 
@@ -72,16 +79,20 @@ namespace ImageImporter.Tests.ImageImporter
             }
             var outputDirectory = new DirectoryInfo(m_OutputDirectory);
             Assert.IsTrue(outputDirectory.Exists);
-            var subDirectories = outputDirectory.GetDirectories();            
-            Assert.AreEqual(subDirectories.Length, 3);
-            Assert.Contains("2015_06_15", subDirectories.Select(d => d.Name).ToList());
-            Assert.Contains("RAW", subDirectories.First(d => d.Name.Equals("2015_06_15")).GetDirectories().Select(d => d.Name).ToList());
-            Assert.Contains("2016_02_27", subDirectories.Select(d => d.Name).ToList());
-            Assert.Contains("JPG", subDirectories.First(d => d.Name.Equals("2016_02_27")).GetDirectories().Select(d => d.Name).ToList());
-            Assert.Contains("2019_11_15", subDirectories.Select(d => d.Name).ToList());
+            foreach(var referenceFile in m_ReferenceFileDescriptions)
+            {
+                var files = outputDirectory.GetFiles(referenceFile.FileName, SearchOption.AllDirectories);
+                Assert.IsNotNull(files);
+                Assert.That(files.Count, Is.AtMost(1));
+                var expectedPath = referenceFile.GetExpectedPath(referenceFile.FileKind);
+                Assert.IsTrue(
+                    files[0].FullName.EndsWith(expectedPath),
+                    $"Expected {expectedPath}, got {files[0].FullName}"
+                    );
+            }
         }
 
-        [TestCase(true), Ignore("Not implemented yet")]
+        [TestCase(true)]
         [TestCase(false)]
         public void ImportRawFileTest(bool initializeFromFile)
         {   
@@ -93,9 +104,21 @@ namespace ImageImporter.Tests.ImageImporter
             }
             else
             {
-                m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory), m_OutputDirectory, m_RawFiles, m_NonRawFiles, m_VideoFiles, string.Empty);
+                m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory), m_OutputDirectory, m_RawFiles, new List<string>(), new List<string>(), string.Empty);
             }
-            Assert.Fail("Test is not implemented yet");
+            var outputDirectory = new DirectoryInfo(m_OutputDirectory);
+            Assert.IsTrue(outputDirectory.Exists);
+            foreach(var referenceFile in m_ReferenceFileDescriptions)
+            {
+                var files = outputDirectory.GetFiles(referenceFile.FileName, SearchOption.AllDirectories);
+                Assert.IsNotNull(files);
+                Assert.That(files.Count, Is.AtMost(1));
+                var expectedPath = referenceFile.GetExpectedPath(m_RawFiles.Contains(referenceFile.Extension.ToLowerInvariant()) ? referenceFile.FileKind : FileKind.Unrecognized);
+                Assert.IsTrue(
+                    files[0].FullName.EndsWith(expectedPath),
+                    $"Expected {expectedPath}, got {files[0].FullName}"
+                    );
+            }
         }
 
         [TestCase(true),Ignore("Get a small reference file set")]
@@ -110,12 +133,12 @@ namespace ImageImporter.Tests.ImageImporter
             }
             else
             {
-                m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory), m_OutputDirectory, m_RawFiles, m_NonRawFiles, m_VideoFiles, string.Empty);
+                m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory), m_OutputDirectory, new List<string>(), new List<string>(), m_VideoFiles, string.Empty);
             }
             Assert.Fail("Test is not implemented yet");
         }
 
-        [TestCase(true), Ignore("Not implemented yet")]
+        [TestCase(true)]
         [TestCase(false)]
         public void ImportNonRawFileTest(bool initializeFromFile)
         {
@@ -127,12 +150,24 @@ namespace ImageImporter.Tests.ImageImporter
             }
             else
             {
-                m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory), m_OutputDirectory, m_RawFiles, m_NonRawFiles, m_VideoFiles, string.Empty);
+                m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory), m_OutputDirectory, new List<string>(), m_NonRawFiles, new List<string>(), string.Empty);
             }
-            Assert.Fail("Test is not implemented yet");
+            var outputDirectory = new DirectoryInfo(m_OutputDirectory);
+            Assert.IsTrue(outputDirectory.Exists);
+            foreach(var referenceFile in m_ReferenceFileDescriptions)
+            {
+                var files = outputDirectory.GetFiles(referenceFile.FileName, SearchOption.AllDirectories);
+                Assert.IsNotNull(files);
+                Assert.That(files.Count, Is.AtMost(1));
+                var expectedPath = referenceFile.GetExpectedPath(m_NonRawFiles.Contains(referenceFile.Extension.ToLowerInvariant()) ? referenceFile.FileKind : FileKind.Unrecognized);
+                Assert.IsTrue(
+                    files[0].FullName.EndsWith(expectedPath),
+                    $"Expected {expectedPath}, got {files[0].FullName}"
+                    );
+            }
         }
 
-        [TestCase(true), Ignore("Not implemented yet")]
+        [TestCase(true)]
         [TestCase(false)]
         public void ImportMiscFileTest(bool initializeFromFile)
         {
@@ -144,9 +179,21 @@ namespace ImageImporter.Tests.ImageImporter
             }
             else
             {
-                m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory), m_OutputDirectory, m_RawFiles, m_NonRawFiles, m_VideoFiles, string.Empty);
+                m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory), m_OutputDirectory, new List<string>(), new List<string>(), new List<string>(), string.Empty);
             }
-            Assert.Fail("Test is not implemented yet");
+            var outputDirectory = new DirectoryInfo(m_OutputDirectory);
+            Assert.IsTrue(outputDirectory.Exists);
+            foreach(var referenceFile in m_ReferenceFileDescriptions)
+            {
+                var files = outputDirectory.GetFiles(referenceFile.FileName, SearchOption.AllDirectories);
+                Assert.IsNotNull(files);
+                Assert.That(files.Count, Is.AtMost(1));
+                var expectedPath = referenceFile.GetExpectedPath(FileKind.Unrecognized);
+                Assert.IsTrue(
+                    files[0].FullName.EndsWith(expectedPath),
+                    $"Expected {expectedPath}, got {files[0].FullName}"
+                    );
+            }
         }
 
         [Test]
