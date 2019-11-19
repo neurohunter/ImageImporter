@@ -77,19 +77,7 @@ namespace ImageImporter.Tests.ImageImporter
             {
                 m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory), m_OutputDirectory, m_RawFiles, m_NonRawFiles, m_VideoFiles, string.Empty);
             }
-            var outputDirectory = new DirectoryInfo(m_OutputDirectory);
-            Assert.IsTrue(outputDirectory.Exists);
-            foreach(var referenceFile in m_ReferenceFileDescriptions)
-            {
-                var files = outputDirectory.GetFiles(referenceFile.FileName, SearchOption.AllDirectories);
-                Assert.IsNotNull(files);
-                Assert.That(files.Count, Is.AtMost(1));
-                var expectedPath = referenceFile.GetExpectedPath(referenceFile.FileKind);
-                Assert.IsTrue(
-                    files[0].FullName.EndsWith(expectedPath),
-                    $"Expected {expectedPath}, got {files[0].FullName}"
-                    );
-            }
+            ValidateOutput(m_RawFiles, m_NonRawFiles, m_VideoFiles);
         }
 
         [TestCase(true)]
@@ -106,19 +94,7 @@ namespace ImageImporter.Tests.ImageImporter
             {
                 m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory), m_OutputDirectory, m_RawFiles, new List<string>(), new List<string>(), string.Empty);
             }
-            var outputDirectory = new DirectoryInfo(m_OutputDirectory);
-            Assert.IsTrue(outputDirectory.Exists);
-            foreach(var referenceFile in m_ReferenceFileDescriptions)
-            {
-                var files = outputDirectory.GetFiles(referenceFile.FileName, SearchOption.AllDirectories);
-                Assert.IsNotNull(files);
-                Assert.That(files.Count, Is.AtMost(1));
-                var expectedPath = referenceFile.GetExpectedPath(m_RawFiles.Contains(referenceFile.Extension.ToLowerInvariant()) ? referenceFile.FileKind : FileKind.Unrecognized);
-                Assert.IsTrue(
-                    files[0].FullName.EndsWith(expectedPath),
-                    $"Expected {expectedPath}, got {files[0].FullName}"
-                    );
-            }
+            ValidateOutput(m_RawFiles, new List<string>(), new List<string>());
         }
 
         [TestCase(true),Ignore("Get a small reference file set")]
@@ -152,19 +128,7 @@ namespace ImageImporter.Tests.ImageImporter
             {
                 m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory), m_OutputDirectory, new List<string>(), m_NonRawFiles, new List<string>(), string.Empty);
             }
-            var outputDirectory = new DirectoryInfo(m_OutputDirectory);
-            Assert.IsTrue(outputDirectory.Exists);
-            foreach(var referenceFile in m_ReferenceFileDescriptions)
-            {
-                var files = outputDirectory.GetFiles(referenceFile.FileName, SearchOption.AllDirectories);
-                Assert.IsNotNull(files);
-                Assert.That(files.Count, Is.AtMost(1));
-                var expectedPath = referenceFile.GetExpectedPath(m_NonRawFiles.Contains(referenceFile.Extension.ToLowerInvariant()) ? referenceFile.FileKind : FileKind.Unrecognized);
-                Assert.IsTrue(
-                    files[0].FullName.EndsWith(expectedPath),
-                    $"Expected {expectedPath}, got {files[0].FullName}"
-                    );
-            }
+            ValidateOutput(new List<string>(), m_NonRawFiles, new List<string>());
         }
 
         [TestCase(true)]
@@ -181,19 +145,7 @@ namespace ImageImporter.Tests.ImageImporter
             {
                 m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory), m_OutputDirectory, new List<string>(), new List<string>(), new List<string>(), string.Empty);
             }
-            var outputDirectory = new DirectoryInfo(m_OutputDirectory);
-            Assert.IsTrue(outputDirectory.Exists);
-            foreach(var referenceFile in m_ReferenceFileDescriptions)
-            {
-                var files = outputDirectory.GetFiles(referenceFile.FileName, SearchOption.AllDirectories);
-                Assert.IsNotNull(files);
-                Assert.That(files.Count, Is.AtMost(1));
-                var expectedPath = referenceFile.GetExpectedPath(FileKind.Unrecognized);
-                Assert.IsTrue(
-                    files[0].FullName.EndsWith(expectedPath),
-                    $"Expected {expectedPath}, got {files[0].FullName}"
-                    );
-            }
+            ValidateOutput(new List<string>(), new List<string>(), new List<string>());
         }
 
         [Test]
@@ -206,5 +158,36 @@ namespace ImageImporter.Tests.ImageImporter
             Assert.IsEmpty(Directory.GetFileSystemEntries(m_OutputDirectory));
             Directory.Delete(inputDirectory);
         }
+
+        public void ValidateOutput(List<string> rawFileTypes, List<string> nonRawFileTypes, List<string> videoFileTypes)
+        {
+            var outputDirectory = new DirectoryInfo(m_OutputDirectory);
+            Assert.IsTrue(outputDirectory.Exists);
+            foreach(var referenceFile in m_ReferenceFileDescriptions)
+            {
+                var files = outputDirectory.GetFiles(referenceFile.FileName, SearchOption.AllDirectories);
+                Assert.IsNotNull(files);
+                Assert.That(files.Count, Is.AtMost(1));
+                var requiredFileKind = FileKind.Unrecognized;
+                if (rawFileTypes.Contains(referenceFile.Extension.ToLowerInvariant()))
+                {
+                    requiredFileKind = FileKind.RawImage;
+                }
+                if (nonRawFileTypes.Contains(referenceFile.Extension.ToLowerInvariant()))
+                {
+                    requiredFileKind = FileKind.JpegImage;
+                }
+                if (videoFileTypes.Contains(referenceFile.Extension.ToLowerInvariant()))
+                {
+                    requiredFileKind = FileKind.Video;
+                }
+                var expectedPath = referenceFile.GetExpectedPath(requiredFileKind);
+                Assert.IsTrue(
+                    files[0].FullName.EndsWith(expectedPath),
+                    $"Expected {expectedPath}, got {files[0].FullName}"
+                    );
+            }
+        }
+
     }
 }
