@@ -1,6 +1,6 @@
 # ImageImporter
 
-[![Build Status](https://vishnyakovpavel.visualstudio.com/ImageImporter/_apis/build/status/Build-Main?branchName=master)](https://vishnyakovpavel.visualstudio.com/ImageImporter/_build/latest?definitionId=6&branchName=master)
+[![Build Status](https://vishnyakovpavel.visualstudio.com/ImageImporter/_apis/build/status/Create-Release?branchName=master)](https://vishnyakovpavel.visualstudio.com/ImageImporter/_build/latest?definitionId=7&branchName=master)
 
 ## Introduction
 
