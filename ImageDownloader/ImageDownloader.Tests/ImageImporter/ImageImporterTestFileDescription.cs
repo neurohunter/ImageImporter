@@ -36,5 +36,17 @@ namespace ImageImporter.Tests.ImageImporter
                 );
             return path; 
         }
+
+        public string GetExpectedPath(FileKind requiredFileKind, string requiredDateTime)
+        {
+            var path = System.IO.Path.Combine(
+                (requiredFileKind == FileKind.JpegImage || requiredFileKind == FileKind.RawImage ? 
+                DateDigitized.Date.ToString("yyyy_MM_dd") :
+                DateCreated.Date.ToString("yyyy_MM_dd")),
+                requiredFileKind.GetAttributeOfType<DescriptionAttribute>().Description,
+                FileName
+                );
+            return path;
+        }
     }
 }

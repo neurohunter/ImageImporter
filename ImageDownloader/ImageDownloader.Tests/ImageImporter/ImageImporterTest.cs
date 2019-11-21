@@ -31,13 +31,28 @@ namespace ImageImporter.Tests.ImageImporter
                 Directory.Delete(m_OutputDirectory, true);
             }
             Directory.CreateDirectory(m_OutputDirectory);
+
             m_ReferenceFileDescriptions = new List<ImageImporterTestFileDescription>
             {
-                new ImageImporterTestFileDescription("IMG_5283.CR2", new DateTime(2015, 06, 15), new DateTime(2019, 11, 15), FileKind.RawImage),
-                new ImageImporterTestFileDescription("IMG_2584.heic", new DateTime(2015, 06, 15), new DateTime(2019, 11, 15), FileKind.Unrecognized),
-                new ImageImporterTestFileDescription("2016-02-27 10.46.01.jpg", new DateTime(2016, 02, 27), new DateTime(2019, 11, 15), FileKind.JpegImage),
+                new ImageImporterTestFileDescription("IMG_5283.CR2", new DateTime(2015, 06, 15), DateTime.Now, FileKind.RawImage),
+                new ImageImporterTestFileDescription("IMG_2584.heic", new DateTime(2015, 06, 15), DateTime.Now, FileKind.Unrecognized),
+                new ImageImporterTestFileDescription("2016-02-27 10.46.01.jpg", new DateTime(2016, 02, 27), DateTime.Now, FileKind.JpegImage),
             };
+
+            TouchReferenceFiles();
+
             m_ImageImporter = new Importer();
+        }
+
+        private void TouchReferenceFiles()
+        {
+            foreach(var referenceFile in m_ReferenceFileDescriptions)
+            {
+                var referenceFileInfo = new FileInfo(Path.Combine(TestDataDirectoryPath, DataDirectory, referenceFile.FileName))
+                {
+                    LastAccessTime = DateTime.Now
+                };
+            }
         }
 
         [TearDown]
@@ -182,8 +197,9 @@ namespace ImageImporter.Tests.ImageImporter
                     requiredFileKind = FileKind.Video;
                 }
                 var expectedPath = referenceFile.GetExpectedPath(requiredFileKind);
+                var expectedPathPresent = files[0].FullName.EndsWith(expectedPath);                
                 Assert.IsTrue(
-                    files[0].FullName.EndsWith(expectedPath),
+                    expectedPathPresent,
                     $"Expected {expectedPath}, got {files[0].FullName}"
                     );
             }
