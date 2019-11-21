@@ -23,6 +23,8 @@ pool:
 
 steps:
 - task: NuGetToolInstaller@1
+  inputs:
+    versionSpec: '4.4.1'
 
 - task: NuGetCommand@2
   inputs:
