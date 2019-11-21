@@ -37,7 +37,7 @@ The following can be configured in a configuration file:
 
 * Imports images from a specified directory into a destination directory
 * sorts images into different directories based on date taken from EXIF
-* sorts other files from the same directory based on date created
+* sorts other files from the same directory based on last access date
 * videos currently not supported / tested, planned for future
 
 ### 1.x
