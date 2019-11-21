@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration xmlns="http://tempuri.org/Configuration.xsd">
+  <FileTypes>
+    <RawFileTypes>
+      <FileType>.arw</FileType>
+    </RawFileTypes>
+    <NonRawFileTypes>
+      <FileType>.jpg</FileType>
+    </NonRawFileTypes>
+    <VideoFileTypes>
+      <FileType>.mov</FileType>
+    </VideoFileTypes>
+  </FileTypes>
+  <Pattern>YYYY_MM_DD</Pattern>
+</configuration>

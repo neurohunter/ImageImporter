@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration xmlns="http://tempuri.org/Configuration.xsd">
+  <FileTypes>
+    <VideoFileTypes>
+      <FileType>.mov</FileType>
+    </VideoFileTypes>
+  </FileTypes>  
+  <Destination>Output</Destination>
+</configuration>
