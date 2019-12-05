@@ -112,23 +112,6 @@ namespace ImageImporter.Tests.ImageImporter
             ValidateOutput(m_RawFiles, new List<string>(), new List<string>());
         }
 
-        [TestCase(true),Ignore("Get a small reference file set")]
-        [TestCase(false)]
-        public void ImportVideoFileTest(bool initializeFromFile)
-        {
-            var configPath = initializeFromFile ? Path.Combine(TestDataDirectoryPath,ConfigsDirectory,"config-video.xml") : string.Empty;
-            if (initializeFromFile)
-            {                
-                m_ImageImporter.Initialize(configPath);
-            }
-            else
-            {
-                m_ImageImporter.Initialize(configPath, m_OutputDirectory, m_RawFiles, m_NonRawFiles, m_VideoFiles, string.Empty);                
-            }
-            m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory));
-            Assert.Fail("Test is not implemented yet");
-        }
-
         [TestCase(true)]
         [TestCase(false)]
         public void ImportNonRawFileTest(bool initializeFromFile)
@@ -144,6 +127,23 @@ namespace ImageImporter.Tests.ImageImporter
             }
             m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory));
             ValidateOutput(new List<string>(), m_NonRawFiles, new List<string>());
+        }
+
+        [TestCase(true),Ignore("Get a small reference file set")]
+        [TestCase(false)]
+        public void ImportVideoFileTest(bool initializeFromFile)
+        {
+            var configPath = initializeFromFile ? Path.Combine(TestDataDirectoryPath,ConfigsDirectory,"config-video.xml") : string.Empty;
+            if (initializeFromFile)
+            {                
+                m_ImageImporter.Initialize(configPath);
+            }
+            else
+            {
+                m_ImageImporter.Initialize(configPath, m_OutputDirectory, m_RawFiles, m_NonRawFiles, m_VideoFiles, string.Empty);                
+            }
+            m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory));
+            Assert.Fail("Test is not implemented yet");
         }
 
         [TestCase(true)]
