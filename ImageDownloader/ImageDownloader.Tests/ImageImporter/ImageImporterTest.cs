@@ -48,7 +48,7 @@ namespace ImageImporter.Tests.ImageImporter
         {
             foreach(var referenceFile in m_ReferenceFileDescriptions)
             {
-                var referenceFileInfo = new FileInfo(Path.Combine(TestDataDirectoryPath, DataDirectory, referenceFile.FileName))
+                _ = new FileInfo(Path.Combine(TestDataDirectoryPath, DataDirectory, referenceFile.FileName))
                 {
                     LastAccessTime = DateTime.Now
                 };
