@@ -20,15 +20,8 @@ namespace ImageImporter.Cli.Framework
                 imageImporter.FileFailed += FileFailed;
                 imageImporter.ImportFinished += ImportFinished;
                 var arguments = parser.Object;
-                if (System.IO.File.Exists(arguments.ConfigurationPath))
-                {
-                    imageImporter.Initialize(arguments.ConfigurationPath);
-                    imageImporter.Import(arguments.InputDirectory, arguments.NoPathProvided ? string.Empty : arguments.OutputDirectory);
-                }
-                else
-                {
-                    imageImporter.Import(arguments.InputDirectory, arguments.OutputDirectory, arguments.RawFileExtensions, arguments.NonRawFileExtensions, arguments.VideoFileExtensions, string.Empty);
-                }
+                imageImporter.Initialize(arguments.ConfigurationPath, arguments.OutputDirectory, arguments.RawFileExtensions, arguments.NonRawFileExtensions, arguments.VideoFileExtensions, string.Empty);
+                imageImporter.Import(arguments.InputDirectory);                
             }
             else
             {

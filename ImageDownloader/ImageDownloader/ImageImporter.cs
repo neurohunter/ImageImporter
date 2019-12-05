@@ -53,67 +53,64 @@ namespace ImageImporter
         /// <inheritdoc/>
         public void Initialize(string configurationFilePath)
         {
-            Configuration = m_ConfigurationProvider.InitializeFromFile(configurationFilePath);
-        }
+            Configuration = File.Exists(configurationFilePath) ?
+                m_ConfigurationProvider.InitializeFromFile(configurationFilePath) :
+                m_ConfigurationProvider.ProvideDefaultConfiguration();        
+        }        
         
         /// <inheritdoc/>
-        public void Import(string inputDrirectory)
+        public void Initialize(string configurationFilePath, string outputDirectory, IEnumerable<string> rawFiles, IEnumerable<string> nonRawFiles, IEnumerable<string> videoFiles, string pattern)
         {
-            var outputDirectory = !string.IsNullOrEmpty(Configuration.Destination) ? Configuration.Destination : Environment.CurrentDirectory;
-            Import(inputDrirectory, outputDirectory, Configuration.FileTypes.RawFileTypes, Configuration.FileTypes.NonRawFileTypes, Configuration.FileTypes.VideoFileTypes, string.Empty);
-        }
-
-        /// <inheritdoc/>
-        public void Import(string inputDirectory, string outputDirectory)
-        {
-            Import(inputDirectory, outputDirectory, Configuration.FileTypes.RawFileTypes, Configuration.FileTypes.NonRawFileTypes, Configuration.FileTypes.VideoFileTypes, string.Empty);
-        }
-
-        /// <inheritdoc/>
-        public void Import(string inputDirectory, string outputDirectory, IEnumerable<string> rawFiles, IEnumerable<string> nonRawFiles, IEnumerable<string> videoFiles, string pattern)
-        {
-            Configuration.FileTypes.RawFileTypes = rawFiles.ToArray();
-            Configuration.FileTypes.NonRawFileTypes = nonRawFiles.ToArray();
-            Configuration.FileTypes.VideoFileTypes = videoFiles.ToArray();
-            var outputPath = DetermineOutputPath(outputDirectory);
-            if (!Directory.Exists(outputPath))
+            Initialize(configurationFilePath);
+            if (!string.IsNullOrEmpty(outputDirectory))
             {
-                Directory.CreateDirectory(outputPath);
+                Configuration.Destination = QualifyPath(outputDirectory);
+            }
+            if (rawFiles != null && rawFiles.Any())
+            {
+                Configuration.FileTypes.RawFileTypes = rawFiles.ToArray();
+            }
+            if (nonRawFiles != null && nonRawFiles.Any())
+            {
+                Configuration.FileTypes.NonRawFileTypes = nonRawFiles.ToArray();
+            }
+            if (videoFiles != null && videoFiles.Any())
+            {
+                Configuration.FileTypes.VideoFileTypes = videoFiles.ToArray();
+            }
+            if (!string.IsNullOrEmpty(pattern))
+            {
+                Configuration.Pattern = pattern;
+            }
+        }
+
+        /// <inheritdoc/>
+        public void Import(string inputDirectory)
+        {
+            if (!Directory.Exists(Configuration.Destination))
+            {
+                Directory.CreateDirectory(Configuration.Destination);
             }
 
             var filesToImport = Directory.GetFiles(inputDirectory).ToList();
 
-            OnImportStarted(new ImportEventArgs(inputDirectory, outputPath, filesToImport.Count));
+            OnImportStarted(new ImportEventArgs(inputDirectory, Configuration.Destination, filesToImport.Count));
             foreach(var file in Directory.GetFiles(inputDirectory))
             {
                 var fileInfo = new FileInfo(file);
-                ProcessSingleFile(fileInfo, outputPath);
+                ProcessSingleFile(fileInfo, Configuration.Destination);
             }
-            OnImportFinished(new ImportEventArgs(inputDirectory, outputPath, filesToImport.Count));
+            OnImportFinished(new ImportEventArgs(inputDirectory, Configuration.Destination, filesToImport.Count));
         }
 
         /// <summary>
-        /// Determine output directory w.r.t passed parameter and configuration
+        /// Creates a fully qualified path
         /// </summary>
-        /// <param name="outputDirectory">Output directory passed in as a command-line argument</param>
-        /// <returns>Directory to import data to</returns>
-        private string DetermineOutputPath(string outputDirectory)
+        /// <param name="path">Original path</param>
+        /// <returns>Fully qualified path created from original</returns>
+        private string QualifyPath(string path)
         {
-            if (string.IsNullOrEmpty(outputDirectory))
-            {
-                return Configuration.Destination;
-            }
-            else
-            {
-                if (Path.IsPathRooted(outputDirectory))
-                {
-                    return outputDirectory;
-                }
-                else
-                {
-                    return Path.Combine(Environment.CurrentDirectory, outputDirectory);
-                }
-            }
+            return Path.IsPathRooted(path) ? path : Path.Combine(Environment.CurrentDirectory, path);
         }
 
         /// <summary>

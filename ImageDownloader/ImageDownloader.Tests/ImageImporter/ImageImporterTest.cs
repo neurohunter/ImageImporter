@@ -82,16 +82,16 @@ namespace ImageImporter.Tests.ImageImporter
         [TestCase(false)]
         public void ImportFileTest(bool initializeFromFile)
         {
+            var configPath = initializeFromFile ? Path.Combine(TestDataDirectoryPath,ConfigsDirectory,"config-all.xml") : string.Empty;
             if (initializeFromFile)
-            {
-                var configPath = Path.Combine(TestDataDirectoryPath,ConfigsDirectory,"config-all.xml");
+            {                
                 m_ImageImporter.Initialize(configPath);
-                m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory));
             }
             else
             {
-                m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory), m_OutputDirectory, m_RawFiles, m_NonRawFiles, m_VideoFiles, string.Empty);
+                m_ImageImporter.Initialize(configPath, m_OutputDirectory, m_RawFiles, m_NonRawFiles, m_VideoFiles, string.Empty);                
             }
+            m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory));
             ValidateOutput(m_RawFiles, m_NonRawFiles, m_VideoFiles);
         }
 
@@ -99,16 +99,16 @@ namespace ImageImporter.Tests.ImageImporter
         [TestCase(false)]
         public void ImportRawFileTest(bool initializeFromFile)
         {   
+            var configPath = initializeFromFile ? Path.Combine(TestDataDirectoryPath,ConfigsDirectory,"config-raw.xml") : string.Empty;
             if (initializeFromFile)
-            {
-                var configPath = Path.Combine(TestDataDirectoryPath,ConfigsDirectory,"config-raw.xml");
+            {                
                 m_ImageImporter.Initialize(configPath);
-                m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory));
             }
             else
             {
-                m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory), m_OutputDirectory, m_RawFiles, new List<string>(), new List<string>(), string.Empty);
+                m_ImageImporter.Initialize(configPath, m_OutputDirectory, m_RawFiles, new List<string>(), new List<string>(), string.Empty);                
             }
+            m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory));
             ValidateOutput(m_RawFiles, new List<string>(), new List<string>());
         }
 
@@ -116,16 +116,16 @@ namespace ImageImporter.Tests.ImageImporter
         [TestCase(false)]
         public void ImportVideoFileTest(bool initializeFromFile)
         {
+            var configPath = initializeFromFile ? Path.Combine(TestDataDirectoryPath,ConfigsDirectory,"config-video.xml") : string.Empty;
             if (initializeFromFile)
-            {
-                var configPath = Path.Combine(TestDataDirectoryPath,ConfigsDirectory,"config-video.xml");
+            {                
                 m_ImageImporter.Initialize(configPath);
-                m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory));
             }
             else
             {
-                m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory), m_OutputDirectory, new List<string>(), new List<string>(), m_VideoFiles, string.Empty);
+                m_ImageImporter.Initialize(configPath, m_OutputDirectory, m_RawFiles, m_NonRawFiles, m_VideoFiles, string.Empty);                
             }
+            m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory));
             Assert.Fail("Test is not implemented yet");
         }
 
@@ -133,16 +133,16 @@ namespace ImageImporter.Tests.ImageImporter
         [TestCase(false)]
         public void ImportNonRawFileTest(bool initializeFromFile)
         {
+            var configPath = initializeFromFile ? Path.Combine(TestDataDirectoryPath,ConfigsDirectory,"config-nonraw.xml") : string.Empty;
             if (initializeFromFile)
-            {
-                var configPath = Path.Combine(TestDataDirectoryPath,ConfigsDirectory,"config-nonraw.xml");
+            {                
                 m_ImageImporter.Initialize(configPath);
-                m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory));
             }
             else
             {
-                m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory), m_OutputDirectory, new List<string>(), m_NonRawFiles, new List<string>(), string.Empty);
+                m_ImageImporter.Initialize(configPath, m_OutputDirectory, new List<string>(), m_NonRawFiles, new List<string>(), string.Empty);                
             }
+            m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory));
             ValidateOutput(new List<string>(), m_NonRawFiles, new List<string>());
         }
 
@@ -150,16 +150,16 @@ namespace ImageImporter.Tests.ImageImporter
         [TestCase(false)]
         public void ImportMiscFileTest(bool initializeFromFile)
         {
+            var configPath = initializeFromFile ? Path.Combine(TestDataDirectoryPath,ConfigsDirectory,"config-misc.xml") : string.Empty;
             if (initializeFromFile)
-            {
-                var configPath = Path.Combine(TestDataDirectoryPath,ConfigsDirectory,"config-misc.xml");
+            {                
                 m_ImageImporter.Initialize(configPath);
-                m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory));
             }
             else
             {
-                m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory), m_OutputDirectory, new List<string>(), new List<string>(), new List<string>(), string.Empty);
+                m_ImageImporter.Initialize(configPath, m_OutputDirectory, new List<string>(), new List<string>(), new List<string>(), string.Empty);                
             }
+            m_ImageImporter.Import(Path.Combine(TestDataDirectoryPath,DataDirectory));
             ValidateOutput(new List<string>(), new List<string>(), new List<string>());
         }
 
@@ -168,7 +168,7 @@ namespace ImageImporter.Tests.ImageImporter
         {
             var inputDirectory = Path.Combine(TestDataDirectoryPath, "EmptyDirectory");
             Directory.CreateDirectory(inputDirectory);
-            m_ImageImporter.Import(inputDirectory, m_OutputDirectory);
+            m_ImageImporter.Import(inputDirectory);
             Assert.IsTrue(Directory.Exists(m_OutputDirectory));
             Assert.IsEmpty(Directory.GetFileSystemEntries(m_OutputDirectory));
             Directory.Delete(inputDirectory);
