@@ -26,6 +26,11 @@ steps:
   inputs:
     versionSpec: '4.4.1'
 
+- task: VisualStudioTestPlatformInstaller@1
+  inputs:
+    packageFeedSelector: 'nugetOrg'
+    versionSelector: 'latestStable'
+
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
