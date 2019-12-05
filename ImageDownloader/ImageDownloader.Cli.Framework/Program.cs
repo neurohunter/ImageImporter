@@ -76,8 +76,7 @@ namespace ImageImporter.Cli.Framework
                 .Required();                
             parser.Setup(a => a.OutputDirectory)
                 .As('o', "output-directory")
-                .WithDescription("Directory to put files to (will be created if absent)")
-                .SetDefault(Environment.CurrentDirectory);
+                .WithDescription("Directory to put files to (will be created if absent)");
             parser.Setup(a => a.ConfigurationPath)
                 .As('c', "configuration-path")
                 .WithDescription("Path to a configuration xml file");
