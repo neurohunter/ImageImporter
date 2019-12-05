@@ -6,17 +6,6 @@ using System.Xml.Serialization;
 namespace ImageImporter
 {
     /// <summary>
-    /// Camera type (defines file types to be used)
-    /// </summary>
-    public enum CameraType
-    {
-        Generic,
-        Canon,
-        Sony,
-        iOS,
-    }
-
-    /// <summary>
     /// Configuration provider for ImageDownloader
     /// </summary>
     public class ConfigurationProvider
@@ -24,36 +13,20 @@ namespace ImageImporter
         /// <summary>
         /// Provides default configuration per camera type
         /// </summary>
-        /// <param name="cameraType">Camera type</param>
         /// <returns>Default configuration</returns>
-        public Configuration ProvideDefaultConfiguration(CameraType cameraType= CameraType.Generic)
+        public Configuration ProvideDefaultConfiguration()
         {
-            var configuration = new Configuration
+            return new Configuration
             { 
                 Destination = string.Empty,
                 Pattern = string.Empty,
-            };
-            switch (cameraType)
-            {
-                case CameraType.Generic:
-                    configuration.FileTypes = new FileTypes
+                FileTypes = new FileTypes
                     {                    
-                        VideoFileTypes = new string[0],
-                        RawFileTypes = new string[0],
-                        NonRawFileTypes = new string[0]
-                    };
-                    break;
-                case CameraType.Canon:
-                    configuration.FileTypes = ProvideDefaultFileTypesForCanon();
-                    break;
-                case CameraType.Sony:
-                    configuration.FileTypes = ProvideDefaultFileTypesForSony();
-                    break;
-                case CameraType.iOS:
-                    configuration.FileTypes = ProvideDefaultFileTypesForiOS();
-                    break;
-            }
-            return configuration;
+                        VideoFileTypes = System.Array.Empty<string>(),
+                        RawFileTypes = System.Array.Empty<string>(),
+                        NonRawFileTypes = System.Array.Empty<string>()
+                },
+            };
         }
 
         /// <summary>
@@ -70,13 +43,13 @@ namespace ImageImporter
             var destinationPath = string.IsNullOrEmpty(destination) ? string.Empty : destination;
             return new Configuration
             {
-                Destination = System.IO.Path.IsPathRooted(destinationPath) ? destinationPath : System.IO.Path.Combine(System.Environment.CurrentDirectory, destinationPath),
+                Destination = Path.IsPathRooted(destinationPath) ? destinationPath : Path.Combine(System.Environment.CurrentDirectory, destinationPath),
                 Pattern = string.IsNullOrEmpty(pattern) ? string.Empty : pattern,
                 FileTypes = new FileTypes
                 {
-                    RawFileTypes = rawTypes?.ToArray() ?? new string[0],
-                    NonRawFileTypes = nonRawTypes?.ToArray() ?? new string[0],
-                    VideoFileTypes = videoTypes?.ToArray() ?? new string[0],
+                    RawFileTypes = rawTypes?.ToArray() ?? System.Array.Empty<string>(),
+                    NonRawFileTypes = nonRawTypes?.ToArray() ?? System.Array.Empty<string>(),
+                    VideoFileTypes = videoTypes?.ToArray() ?? System.Array.Empty<string>(),
                 }
             };
         }
@@ -136,45 +109,5 @@ namespace ImageImporter
             }
             return configuration;
         }
-
-        /// <summary>
-        /// Provides default file types for Canon cameras
-        /// </summary>
-        private FileTypes ProvideDefaultFileTypesForCanon()
-        {
-            return new FileTypes
-            {
-                NonRawFileTypes = new []{ ".jpg" },
-                RawFileTypes = new [] { ".cr2", ".cr3"},
-                VideoFileTypes = new [] { ".mov"}
-            };
-        }
-
-        /// <summary>
-        /// Provides default file types for Sony cameras
-        /// </summary>
-        private FileTypes ProvideDefaultFileTypesForSony()
-        { 
-            return new FileTypes
-            {
-                NonRawFileTypes = new []{ ".jpg" },
-                RawFileTypes = new [] { ".arw"},
-                VideoFileTypes = new [] { ".mov"}
-            };
-        }
-
-        /// <summary>
-        /// Provides default file types for iOS cameras (iPhone/iPod Touch/iPad)
-        /// </summary>        
-        private FileTypes ProvideDefaultFileTypesForiOS()
-        { 
-            return new FileTypes
-            {
-                NonRawFileTypes = new []{ ".jpg", ".heic" },
-                RawFileTypes = new [] { ".tiff", ".dng"},
-                VideoFileTypes = new [] { ".mov", ".hevc"}
-            };
-        }
-
     }
 }
