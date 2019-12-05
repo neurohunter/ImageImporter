@@ -18,7 +18,7 @@ namespace ImageImporter
         {
             return new Configuration
             { 
-                Destination = string.Empty,
+                Destination = System.Environment.CurrentDirectory,
                 Pattern = string.Empty,
                 FileTypes = new FileTypes
                     {                    
