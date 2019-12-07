@@ -17,10 +17,19 @@ namespace ImageImporter.FileProcessor
             try
             {
                 var metadataDirectories = ImageMetadataReader.ReadMetadata(inputFile.FullName);
-                var exifTagDirectory = metadataDirectories.OfType<ExifSubIfdDirectory>().FirstOrDefault();
-                if (exifTagDirectory != null)
+                try
                 {
-                    dateTimeTaken = exifTagDirectory.TryGetDateTime(ExifDirectoryBase.TagDateTimeDigitized, out var dateTime) ? dateTime : dateTimeTaken;
+                    var tagCollection = metadataDirectories.OfType<ExifSubIfdDirectory>().FirstOrDefault();
+                    dateTimeTaken = tagCollection.GetDateTime(ExifSubIfdDirectory.TagDateTimeDigitized);
+                }
+                catch(MetadataException)
+                {
+                    var tagCollection = metadataDirectories.OfType<ExifDirectoryBase>().FirstOrDefault();
+                    dateTimeTaken = tagCollection.GetDateTime(ExifDirectoryBase.TagDateTime);
+                }
+                catch(Exception)
+                {
+                    throw;
                 }
                 return CreateDestinationPath(outputDirectory, dateTimeTaken.Date.ToString("yyyy_MM_dd"), fileKind.GetAttributeOfType<DescriptionAttribute>().Description, inputFile.Name);
             }

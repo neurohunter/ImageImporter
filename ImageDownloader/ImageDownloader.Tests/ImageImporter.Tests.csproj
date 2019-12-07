@@ -44,6 +44,9 @@
     <None Update="TestData\ImageImporter\Input\2016-02-27 10.46.01.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="TestData\ImageImporter\Input\DSC01668.ARW">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="TestData\ImageImporter\Input\IMG_2584.heic">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
