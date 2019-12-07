@@ -3,6 +3,7 @@
   <FileTypes>
     <RawFileTypes>
       <FileType>.cr2</FileType>
+      <FileType>.arw</FileType>
     </RawFileTypes>
     <NonRawFileTypes>
       <FileType>.jpg</FileType>

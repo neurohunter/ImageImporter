@@ -15,7 +15,7 @@ namespace ImageImporter.Tests.ImageImporter
         private const string ConfigsDirectory = "Configs";
         private const string DataDirectory = "Input";
         private const string OutputDirectory = "Output";
-        private List<string> m_RawFiles = new List<string>{ ".cr2"};
+        private List<string> m_RawFiles = new List<string>{ ".cr2", ".arw"};
         private List<string> m_NonRawFiles = new List<string>{ ".jpg"};
         private List<string> m_VideoFiles = new List<string>{ ".mov"};
         private List<ImageImporterTestFileDescription> m_ReferenceFileDescriptions;
@@ -37,7 +37,7 @@ namespace ImageImporter.Tests.ImageImporter
                 new ImageImporterTestFileDescription("IMG_5283.CR2", new DateTime(2015, 06, 15), DateTime.Now, FileKind.RawImage),
                 new ImageImporterTestFileDescription("IMG_2584.heic", new DateTime(2015, 06, 15), DateTime.Now, FileKind.Unrecognized),
                 new ImageImporterTestFileDescription("2016-02-27 10.46.01.jpg", new DateTime(2016, 02, 27), DateTime.Now, FileKind.JpegImage),
-                new ImageImporterTestFileDescription("2016-02-27 10.46.01.jpg", new DateTime(2019, 09, 26), DateTime.Now, FileKind.RawImage),
+                new ImageImporterTestFileDescription("DSC01668.ARW", new DateTime(2019, 09, 26), DateTime.Now, FileKind.RawImage),
             };
 
             TouchReferenceFiles();
