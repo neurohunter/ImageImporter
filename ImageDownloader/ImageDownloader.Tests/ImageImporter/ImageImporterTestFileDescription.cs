@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 
 namespace ImageImporter.Tests.ImageImporter
 {
@@ -35,18 +33,6 @@ namespace ImageImporter.Tests.ImageImporter
                 FileName
                 );
             return path; 
-        }
-
-        public string GetExpectedPath(FileKind requiredFileKind, string requiredDateTime)
-        {
-            var path = System.IO.Path.Combine(
-                (requiredFileKind == FileKind.JpegImage || requiredFileKind == FileKind.RawImage ? 
-                DateDigitized.Date.ToString("yyyy_MM_dd") :
-                DateCreated.Date.ToString("yyyy_MM_dd")),
-                requiredFileKind.GetAttributeOfType<DescriptionAttribute>().Description,
-                FileName
-                );
-            return path;
         }
     }
 }
