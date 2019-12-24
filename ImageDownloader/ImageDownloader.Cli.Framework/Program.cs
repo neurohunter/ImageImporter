@@ -86,12 +86,13 @@ namespace ImageImporter.Cli.Framework
                 .SetDefault(new List<string>());
             parser.Setup<List<string>>(a => a.NonRawFileExtensions)
                 .As('n', "non-raw-types")
-                .WithDescription("Extensions for non-RAW images (e.g. JPEG) (i.e. -r .ext1 .ext2)")
+                .WithDescription("Extensions for non-RAW images (e.g. JPEG) (i.e. -n .ext1 .ext2)")
                 .SetDefault(new List<string>());
             parser.Setup<List<string>>(a => a.VideoFileExtensions)
                 .As('v', "video-types")
-                .WithDescription("Extensions for video files (i.e. -r .ext1 .ext2)")
+                .WithDescription("Extensions for video files (i.e. -v .ext1 .ext2)")
                 .SetDefault(new List<string>());
+
             return parser;
         }
     }
