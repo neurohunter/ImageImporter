@@ -16,7 +16,8 @@ namespace ImageImporter.FileProcessor
             {
                 new NullFileProcessor(),
                 new GenericFileProcessor(),
-                new ExifFileProcessor()
+                new ExifFileProcessor(),
+                new HeicFileProcessor(),
             };
         }
 
