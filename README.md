@@ -17,6 +17,7 @@ Can be used either by providing all the necessary arguments via command line or 
         o:output-directory              Directory to put files to (will be created if absent)
         r:raw-types                     Extensions for RAW images (e.g. -r .ext1 .ext2)
         v:video-types                   Extensions for video files (i.e. -r .ext1 .ext2)
+        f:fresh-only					Process only files that were never imported
 
 ### Configuration file
 
@@ -40,20 +41,11 @@ The following can be configured in a configuration file:
 * sorts other files from the same directory based on last access date
 * videos currently not supported / tested, planned for future
 
-### 1.x
+### 1.1
 
-TBD
-
-
-## Getting Started
-
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-
-1. Installation process
-2. Software dependencies
-3. Latest releases
-4. API references
+* Can process either all files or only files that were never processed before
 
 ## Build and Test
 
-TODO: Describe and show how to build your code and run the tests.
+To build, build ImageImporter.sln solution with Visual Studio or go to ImageDownloader directory and run `msbuild ImageImporter.sln`
+To run tests, navigate to ImageDownloader directory and run `dotnet test`
