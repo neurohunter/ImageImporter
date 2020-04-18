@@ -51,7 +51,7 @@ steps:
     
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '$(Build.BinariesDirectory)/ImageImporter/ImageImporter.Cli.Core/bin/Release/netcore3.1'
+    rootFolderOrFile: '$(Build.BinariesDirectory)/ImageImporter/ImageImporter.Cli.Core/bin/Release/netcoreapp3.1'
     includeRootFolder: false
     archiveType: 'zip'
     archiveFile: '$(Build.BinariesDirectory)/$(projectName)_v$(MajorVersion).$(MinorVersion).$(IncrementReleaseTagNumber).zip'
