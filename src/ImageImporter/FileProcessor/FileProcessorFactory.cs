@@ -18,6 +18,7 @@ namespace ImageImporter.FileProcessor
                 new GenericFileProcessor(),
                 new ExifFileProcessor(),
                 new HeicFileProcessor(),
+                new QuickTimeFileProcessor(),
             };
         }
 
@@ -34,8 +35,9 @@ namespace ImageImporter.FileProcessor
                     return m_FileProcessors.OfType<GenericFileProcessor>().First();
                 case FileKind.RawImage:
                 case FileKind.JpegImage:
-                case FileKind.Video:
                     return m_FileProcessors.OfType<ExifFileProcessor>().First();
+                case FileKind.Video:
+                    return m_FileProcessors.OfType<QuickTimeFileProcessor>().First();
                 default:
                     return m_FileProcessors.OfType<NullFileProcessor>().First();
             }
