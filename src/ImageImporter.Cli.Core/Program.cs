@@ -11,7 +11,7 @@ namespace ImageImporter.Cli.Core
         static void Main(string[] args)
         {
 
-            if (!Arguments.Parse(args, out var arguments))
+            if (Arguments.Parse(args, out var arguments))
             {
                 IImageImporter imageImporter = new ImageImporter();
                 imageImporter.ImportStarted += ImportStarted;
