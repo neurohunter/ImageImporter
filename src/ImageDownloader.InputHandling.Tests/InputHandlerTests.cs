@@ -2,7 +2,7 @@ using NUnit.Framework;
 
 namespace ImageDownloader.InputHandling.Tests
 {
-    public class Tests
+    public class InputHandlerTests
     {
         [SetUp]
         public void Setup()

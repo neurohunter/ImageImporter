@@ -2,7 +2,8 @@
 
 namespace ImageDownloader.InputHandling
 {
-    public class Class1
+    public interface IInputHandler
     {
+        object Parse(string[] args);
     }
 }
