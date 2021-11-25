@@ -34,9 +34,16 @@ namespace ImageImporter.FileProcessor
                     }
                     catch (MetadataException)
                     {
-                        // if no DateTime tag found - try to guess the date from file name
-                        var dateFileNamePart = inputFile.Name.Split('_')[0];
-                        dateTimeTaken = DateTime.ParseExact(dateFileNamePart, "yyyyMMdd", CultureInfo.InvariantCulture);
+                        try
+                        {
+                            // if no DateTime tag found - try to guess the date from file name
+                            var dateFileNamePart = inputFile.Name.Split('_')[0];
+                            dateTimeTaken = DateTime.ParseExact(dateFileNamePart, "yyyyMMdd", CultureInfo.InvariantCulture);
+                        }
+                        catch
+                        {
+                            dateTimeTaken = File.GetLastWriteTime(inputFile.FullName);
+                        }
                     }
                 }
                 catch(Exception)
