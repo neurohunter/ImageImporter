@@ -19,24 +19,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageImporter.Cli.Core", "I
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageImporter.Cli.Core.Tests", "ImageImporter.Cli.Core.Tests\ImageImporter.Cli.Core.Tests.csproj", "{F3372C9A-38F9-4A5B-B8FB-726F8A8CBF7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageDownloader.Cli", "ImageDownloader.Cli\ImageDownloader.Cli.csproj", "{A2B111D0-167F-4854-896D-AA3BED37356C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageDownloader.Core", "ImageDownloader.Core\ImageDownloader.Core.csproj", "{048B88F3-3D40-44FC-B353-E89D0FA0154B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageDownloader.Core.Tests", "ImageDownloader.Core.Tests\ImageDownloader.Core.Tests.csproj", "{46F315C1-4065-4094-81D7-E8130CF8090C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageDownloader.FileManagement", "ImageDownloader.FileManagement\ImageDownloader.FileManagement.csproj", "{A7A0F46D-F850-423B-8258-9A4BDB436DA9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageDownloader.FileManagement.Tests", "ImageDownloader.FileManagement.Tests\ImageDownloader.FileManagement.Tests.csproj", "{F49BAC64-5558-403A-A012-14F60DAE5A4E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageDownloader.TagManagement", "ImageDownloader.TagManagement\ImageDownloader.TagManagement.csproj", "{7E3036F1-8BF4-4491-9FDF-BB0838088D87}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageDownloader.TagManagement.Tests", "ImageDownloader.TagManagement.Tests\ImageDownloader.TagManagement.Tests.csproj", "{CC96C505-54DF-482B-8443-14FE7E24F122}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageDownloader.InputHandling", "ImageDownloader.InputHandling\ImageDownloader.InputHandling.csproj", "{38BCF97B-1DFE-4CDA-B31E-E6522666468A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageDownloader.InputHandling.Tests", "ImageDownloader.InputHandling.Tests\ImageDownloader.InputHandling.Tests.csproj", "{7BAB5DBF-0C43-4E61-B65F-9245C7800377}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
