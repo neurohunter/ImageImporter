@@ -47,15 +47,15 @@ namespace ImageImporter
         {
             m_FileProcessorFactory = new FileProcessorFactory();
             m_ConfigurationProvider = new ConfigurationProvider();
-            Configuration = m_ConfigurationProvider.ProvideDefaultConfiguration();
+            Configuration = m_ConfigurationProvider.Initialize();
         }
         
         /// <inheritdoc/>
         public void Initialize(string configurationFilePath)
         {
             Configuration = File.Exists(configurationFilePath) ?
-                m_ConfigurationProvider.InitializeFromFile(configurationFilePath) :
-                m_ConfigurationProvider.ProvideDefaultConfiguration();        
+                m_ConfigurationProvider.Initialize(configurationFilePath) :
+                m_ConfigurationProvider.Initialize();        
         }        
         
         /// <inheritdoc/>
@@ -125,11 +125,11 @@ namespace ImageImporter
             string destinationPath = string.Empty;
             try
             {
-                destinationPath = m_FileProcessorFactory.ProvideProcessorForFile(fileKind).Process(inputFile, fileKind, outputDirectory);
+                destinationPath = m_FileProcessorFactory.ProvideProcessorForFile(fileKind).Process(inputFile.FullName, fileKind, outputDirectory);
             }
             catch (FileProcessorException)
             {
-                destinationPath = m_FileProcessorFactory.ProvideProcessorForFile(FileKind.Unrecognized).Process(inputFile, FileKind.Unrecognized, outputDirectory);
+                destinationPath = m_FileProcessorFactory.ProvideProcessorForFile(FileKind.Unrecognized).Process(inputFile.FullName, FileKind.Unrecognized, outputDirectory);
             }
             catch (Exception e)
             {
