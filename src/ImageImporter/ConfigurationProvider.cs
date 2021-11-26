@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Xml.Serialization;
 
+[assembly:InternalsVisibleTo("ImageImporter.Test")]
 namespace ImageImporter
 {
     /// <summary>
@@ -14,7 +16,7 @@ namespace ImageImporter
         /// Provides default configuration per camera type
         /// </summary>
         /// <returns>Default configuration</returns>
-        public Configuration ProvideDefaultConfiguration()
+        public Configuration Initialize()
         {
             return new Configuration
             { 
@@ -38,7 +40,7 @@ namespace ImageImporter
         /// <param name="destination">Destination directory</param>
         /// <param name="pattern">Pattern to use</param>
         /// <returns>Configuration</returns>
-        public Configuration InitializeFromParameters(IEnumerable<string> rawTypes, IEnumerable<string> nonRawTypes, IEnumerable<string> videoTypes, string destination, string pattern)
+        public Configuration Initialize(IEnumerable<string> rawTypes, IEnumerable<string> nonRawTypes, IEnumerable<string> videoTypes, string destination, string pattern)
         {
             var destinationPath = string.IsNullOrEmpty(destination) ? string.Empty : destination;
             return new Configuration
@@ -59,7 +61,7 @@ namespace ImageImporter
         /// </summary>
         /// <param name="configurationFilePath">Path to a configuration file</param>
         /// <returns>Configuration</returns>
-        public Configuration InitializeFromFile(string configurationFilePath)
+        public Configuration Initialize(string configurationFilePath)
         {
             Configuration configurationFromFile;
             try
@@ -89,7 +91,7 @@ namespace ImageImporter
             }
             catch
             {
-                configurationFromFile = ProvideDefaultConfiguration();
+                configurationFromFile = Initialize();
             }
             return configurationFromFile;
         }
