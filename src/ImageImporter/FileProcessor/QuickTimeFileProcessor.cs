@@ -10,12 +10,12 @@ namespace ImageImporter.FileProcessor
 {
     internal class QuickTimeFileProcessor : FileProcessor
     {
-        public override string Process(FileInfo inputFile, FileKind fileKind, string outputDirectory)
+        public override string Process(string inputFileName, FileKind fileKind, string outputDirectory)
         {
             DateTime dateTimeTaken = DateTime.Now;
             try
             {
-                var metadataDirectories = ImageMetadataReader.ReadMetadata(inputFile.FullName);
+                var metadataDirectories = ImageMetadataReader.ReadMetadata(inputFileName);
                 try
                 {
                     var tagCollection = metadataDirectories.OfType<MetadataExtractor.Formats.QuickTime.QuickTimeMovieHeaderDirectory>().FirstOrDefault();
@@ -31,7 +31,8 @@ namespace ImageImporter.FileProcessor
                     catch (MetadataException)
                     {
                         // if no DateTime tag found - try to guess the date from file name
-                        var dateFileNamePart = inputFile.Name.Split('_')[0];
+                        var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(inputFileName);
+                        var dateFileNamePart = fileNameWithoutExtension.Split('_')[0];
                         dateTimeTaken = DateTime.ParseExact(dateFileNamePart, "yyyyMMdd", CultureInfo.InvariantCulture);
                     }
                 }
@@ -39,11 +40,11 @@ namespace ImageImporter.FileProcessor
                 {
                     throw;
                 }
-                return CreateDestinationPath(outputDirectory, dateTimeTaken.Date.ToString("yyyy_MM_dd"), fileKind.GetAttributeOfType<DescriptionAttribute>().Description, inputFile.Name);
+                return CreateDestinationPath(outputDirectory, dateTimeTaken.Date.ToString("yyyy_MM_dd"), fileKind.GetAttributeOfType<DescriptionAttribute>().Description, Path.GetFileName(inputFileName));
             }
             catch (Exception e)
             {
-                throw new FileProcessorException($"Cannot read EXIF metadata from {inputFile.FullName}", e);
+                throw new FileProcessorException($"Cannot read EXIF metadata from {inputFileName}", e);
             }
         }
     }
