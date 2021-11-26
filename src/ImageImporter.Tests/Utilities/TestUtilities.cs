@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 
-namespace ImageImporter.Tests.Utilities
+namespace ImageImporter.Test.Utilities
 {
     public static class TestUtilities
     {

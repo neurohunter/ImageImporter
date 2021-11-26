@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using ImageImporter.FileProcessor;
 
-namespace ImageImporter.Tests.FileProcessor
+namespace ImageImporter.Test.FileProcessor
 {
     [TestFixture]
     public class FileProcessorFactoryTest

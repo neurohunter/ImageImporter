@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using ImageImporter.Tests.Utilities;
+using ImageImporter.Test.Utilities;
 using NUnit.Framework;
 
-namespace ImageImporter.Tests.ConfigurationProvider
+namespace ImageImporter.Test.ConfigurationProvider
 {
     public class Tests
     {
@@ -70,7 +70,7 @@ namespace ImageImporter.Tests.ConfigurationProvider
         [TestCaseSource(nameof(InitializeFromParametersTestCaseData))]
         public void InitializeFromParametersTest(IEnumerable<string> rawTypes, IEnumerable<string> nonRawTypes, IEnumerable<string> videoTypes, string destination, string pattern)
         {
-            var configuration = m_Provider.InitializeFromParameters(rawTypes, nonRawTypes, videoTypes, destination, pattern);
+            var configuration = m_Provider.Initialize(rawTypes, nonRawTypes, videoTypes, destination, pattern);
             TestUtilities.ValidateConfiguration(configuration, rawTypes, nonRawTypes, videoTypes, destination, pattern);
         }
     }
