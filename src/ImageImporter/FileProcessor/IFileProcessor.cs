@@ -3,7 +3,7 @@
 namespace ImageImporter.FileProcessor
 {
     /// <summary>
-    /// Processes a single file kind according to rules defined for it
+    /// An interface to retrieve date and time information based on file type
     /// </summary>
     public interface IFileProcessor
     {
