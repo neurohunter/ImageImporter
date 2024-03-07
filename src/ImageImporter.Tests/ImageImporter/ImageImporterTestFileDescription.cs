@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace ImageImporter.Tests.ImageImporter
+namespace ImageImporter.Test.ImageImporter
 {
     public class ImageImporterTestFileDescription
     {

@@ -3,10 +3,10 @@ using System.IO;
 using System.Linq;
 using NUnit.Framework;
 using Importer = ImageImporter.ImageImporter;
-using ImageImporter.Tests.Utilities;
+using ImageImporter.Test.Utilities;
 using System.Collections.Generic;
 
-namespace ImageImporter.Tests.ImageImporter
+namespace ImageImporter.Test.ImageImporter
 {
     [TestFixture]
     public class ImageImporterTest

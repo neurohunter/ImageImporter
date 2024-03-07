@@ -5,7 +5,7 @@ namespace ImageImporter.FileProcessor
     public abstract class FileProcessor:IFileProcessor
     {
         /// <inheritdoc />
-        public abstract string Process(FileInfo inputFile, FileKind fileKind, string outputDirectory);
+        public abstract string Process(string inputFileName, FileKind fileKind, string outputDirectory);
 
         /// <summary>
         /// Creates a destination file path

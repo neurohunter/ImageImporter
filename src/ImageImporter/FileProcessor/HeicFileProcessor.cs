@@ -12,10 +12,10 @@ namespace ImageImporter.FileProcessor
     public class HeicFileProcessor : FileProcessor
     {
         /// </<inheritdoc/>
-        public override string Process(FileInfo inputFile, FileKind fileKind, string outputDirectory)
+        public override string Process(string inputFileName, FileKind fileKind, string outputDirectory)
         {
-            var dateString = ReadDateFromFile(inputFile);
-            return CreateDestinationPath(outputDirectory, dateString, fileKind.GetAttributeOfType<DescriptionAttribute>().Description, inputFile.Name);
+            var dateString = ReadDateFromFile(inputFileName);
+            return CreateDestinationPath(outputDirectory, dateString, fileKind.GetAttributeOfType<DescriptionAttribute>().Description, Path.GetFileNameWithoutExtension(inputFileName));
         }
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace ImageImporter.FileProcessor
         /// </summary>
         /// <param name="inputFile">File to get tag from</param>
         /// <returns>String representation of date</returns>
-        private string ReadDateFromFile(FileInfo inputFile)
+        private string ReadDateFromFile(string inputFileName)
         {
             return DateTime.Now.Date.ToString("yyyy_MM_dd");
         }
